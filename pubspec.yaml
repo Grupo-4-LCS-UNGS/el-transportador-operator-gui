@@ -1,5 +1,5 @@
 name: el_transportador_operadores
-description: A new Flutter project.
+description: Aplicación Cliente del Operador de G4 - El Transportador
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -96,6 +96,8 @@ dependencies:
   url_launcher_platform_interface: 2.3.2
   url_launcher_web: 2.3.3
   url_launcher_windows: 3.1.2
+  background_location: ^0.13.0
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
