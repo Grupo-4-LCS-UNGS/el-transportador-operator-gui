@@ -52,6 +52,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'gps',
           path: '/gps',
           builder: (context, params) => const GpsWidget(),
+        ),
+        FFRoute(
+          name: 'InterfazOperador',
+          path: '/interfazOperador',
+          builder: (context, params) => const InterfazOperadorWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

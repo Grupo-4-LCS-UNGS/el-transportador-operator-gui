@@ -1,8 +1,10 @@
 import '/backend/api_requests/api_calls.dart';
+import '/flutter_flow/flutter_flow_google_map.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/instant_timer.dart';
+import 'dart:async';
 import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
@@ -35,6 +37,17 @@ class _GpsWidgetState extends State<GpsWidget> {
         duration: const Duration(milliseconds: 5000),
         callback: (timer) async {
           await action_blocks.setBufferOfLocation(context);
+          unawaited(
+            () async {
+              await _model.googleMapsController.future.then(
+                (c) => c.animateCamera(
+                  CameraUpdate.newLatLng(FFAppState()
+                      .ultimaPosicionInformadaAppState!
+                      .toGoogleMaps()),
+                ),
+              );
+            }(),
+          );
           _model.apiResult8sb = await TraccarProtocolApiCall.call(
             deviceid: FFAppState().vehiculoActualmenteConduciendoAppState,
             lat: functions
@@ -81,6 +94,7 @@ class _GpsWidgetState extends State<GpsWidget> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
+        resizeToAvoidBottomInset: false,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primary,
@@ -120,11 +134,43 @@ class _GpsWidgetState extends State<GpsWidget> {
           centerTitle: true,
           elevation: 2.0,
         ),
-        body: const SafeArea(
+        body: SafeArea(
           top: true,
           child: Column(
             mainAxisSize: MainAxisSize.max,
-            children: [],
+            children: [
+              Expanded(
+                child: Builder(builder: (context) {
+                  final googleMapMarker =
+                      FFAppState().ultimaPosicionInformadaAppState;
+                  return FlutterFlowGoogleMap(
+                    controller: _model.googleMapsController,
+                    onCameraIdle: (latLng) => _model.googleMapsCenter = latLng,
+                    initialLocation: _model.googleMapsCenter ??=
+                        const LatLng(13.106061, -59.613158),
+                    markers: [
+                      if (googleMapMarker != null)
+                        FlutterFlowMarker(
+                          googleMapMarker.serialize(),
+                          googleMapMarker,
+                        ),
+                    ],
+                    markerColor: GoogleMarkerColor.magenta,
+                    mapType: MapType.normal,
+                    style: GoogleMapStyle.standard,
+                    initialZoom: 14.0,
+                    allowInteraction: true,
+                    allowZoom: true,
+                    showZoomControls: true,
+                    showLocation: true,
+                    showCompass: false,
+                    showMapToolbar: false,
+                    showTraffic: true,
+                    centerMapOnMarkerTap: true,
+                  );
+                }),
+              ),
+            ],
           ),
         ),
       ),

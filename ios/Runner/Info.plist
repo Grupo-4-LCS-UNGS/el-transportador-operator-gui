@@ -43,10 +43,11 @@
 	<true/>
 
 	<key>NSLocationWhenInUseUsageDescription</key>
-    <string>In order to search nearby, this app requires access to your current location.</string>
+    <string>Utilizamos tu gps para informar tu posición e informarla a tu base</string>
 	<key>NSCameraUsageDescription</key>
     <string>Esta app usa tu cámara para ayudarte a escanear código QR</string>
-
+	<key>PermissionGroupNotification</key>
+    <string>Usamos las notificaciones para informarte cuando la aplicación sigue activa en segundo plano</string>
 
 
 	<key>UILaunchStoryboardName</key>
