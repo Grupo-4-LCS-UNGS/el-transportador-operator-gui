@@ -111,6 +111,105 @@ class PosicionesGetCall {
 
 /// End Traccar Group Code
 
+/// Start TransportadorPostaAtuhApi Group Code
+
+class TransportadorPostaAtuhApiGroup {
+  static String getBaseUrl() => 'https://api.g4.potus.ar';
+  static Map<String, String> headers = {};
+  static LoginCall loginCall = LoginCall();
+}
+
+class LoginCall {
+  Future<ApiCallResponse> call({
+    String? nombre = '',
+    String? contrasena = '',
+  }) async {
+    final baseUrl = TransportadorPostaAtuhApiGroup.getBaseUrl();
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'login',
+      apiUrl: '$baseUrl/login',
+      callType: ApiCallType.POST,
+      headers: {},
+      params: {
+        'nombre': nombre,
+        'contrasena': contrasena,
+      },
+      bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  String? token(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.access_token''',
+      ));
+  String? rol(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.rol''',
+      ));
+  int? id(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.id''',
+      ));
+  String? nombre(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.nombre''',
+      ));
+  int? estado(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.estado''',
+      ));
+}
+
+/// End TransportadorPostaAtuhApi Group Code
+
+/// Start Transportador Api Group Code
+
+class TransportadorApiGroup {
+  static String getBaseUrl({
+    String? token = '',
+  }) =>
+      'https://api.g4.potus.ar';
+  static Map<String, String> headers = {
+    'Authorization': 'Bearer [token]',
+  };
+  static DatosDelUsuarioCall datosDelUsuarioCall = DatosDelUsuarioCall();
+}
+
+class DatosDelUsuarioCall {
+  Future<ApiCallResponse> call({
+    String? token = '',
+  }) async {
+    final baseUrl = TransportadorApiGroup.getBaseUrl(
+      token: token,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'DatosDelUsuario',
+      apiUrl: '$baseUrl/mi_perfil',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+/// End Transportador Api Group Code
+
 class TraccarProtocolApiCall {
   static Future<ApiCallResponse> call({
     int? deviceid,
@@ -157,6 +256,9 @@ class ApiPagingParams {
 }
 
 String _toEncodable(dynamic item) {
+  if (item is DocumentReference) {
+    return item.path;
+  }
   return item;
 }
 

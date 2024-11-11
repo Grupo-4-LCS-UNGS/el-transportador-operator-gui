@@ -1,11 +1,12 @@
 // ignore_for_file: unnecessary_getters_setters
 
-import '/backend/schema/util/schema_util.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'index.dart';
+import '/backend/schema/util/firestore_util.dart';
+
 import '/flutter_flow/flutter_flow_util.dart';
 
-class TraccarPositionStruct extends BaseStruct {
+class TraccarPositionStruct extends FFFirebaseStruct {
   TraccarPositionStruct({
     int? deviceId,
     double? latitude,
@@ -13,12 +14,14 @@ class TraccarPositionStruct extends BaseStruct {
     int? altitude,
     int? speed,
     int? course,
+    FirestoreUtilData firestoreUtilData = const FirestoreUtilData(),
   })  : _deviceId = deviceId,
         _latitude = latitude,
         _longitude = longitude,
         _altitude = altitude,
         _speed = speed,
-        _course = course;
+        _course = course,
+        super(firestoreUtilData);
 
   // "deviceId" field.
   int? _deviceId;
@@ -185,6 +188,10 @@ TraccarPositionStruct createTraccarPositionStruct({
   int? altitude,
   int? speed,
   int? course,
+  Map<String, dynamic> fieldValues = const {},
+  bool clearUnsetFields = true,
+  bool create = false,
+  bool delete = false,
 }) =>
     TraccarPositionStruct(
       deviceId: deviceId,
@@ -193,4 +200,74 @@ TraccarPositionStruct createTraccarPositionStruct({
       altitude: altitude,
       speed: speed,
       course: course,
+      firestoreUtilData: FirestoreUtilData(
+        clearUnsetFields: clearUnsetFields,
+        create: create,
+        delete: delete,
+        fieldValues: fieldValues,
+      ),
     );
+
+TraccarPositionStruct? updateTraccarPositionStruct(
+  TraccarPositionStruct? traccarPosition, {
+  bool clearUnsetFields = true,
+  bool create = false,
+}) =>
+    traccarPosition
+      ?..firestoreUtilData = FirestoreUtilData(
+        clearUnsetFields: clearUnsetFields,
+        create: create,
+      );
+
+void addTraccarPositionStructData(
+  Map<String, dynamic> firestoreData,
+  TraccarPositionStruct? traccarPosition,
+  String fieldName, [
+  bool forFieldValue = false,
+]) {
+  firestoreData.remove(fieldName);
+  if (traccarPosition == null) {
+    return;
+  }
+  if (traccarPosition.firestoreUtilData.delete) {
+    firestoreData[fieldName] = FieldValue.delete();
+    return;
+  }
+  final clearFields =
+      !forFieldValue && traccarPosition.firestoreUtilData.clearUnsetFields;
+  if (clearFields) {
+    firestoreData[fieldName] = <String, dynamic>{};
+  }
+  final traccarPositionData =
+      getTraccarPositionFirestoreData(traccarPosition, forFieldValue);
+  final nestedData =
+      traccarPositionData.map((k, v) => MapEntry('$fieldName.$k', v));
+
+  final mergeFields = traccarPosition.firestoreUtilData.create || clearFields;
+  firestoreData
+      .addAll(mergeFields ? mergeNestedFields(nestedData) : nestedData);
+}
+
+Map<String, dynamic> getTraccarPositionFirestoreData(
+  TraccarPositionStruct? traccarPosition, [
+  bool forFieldValue = false,
+]) {
+  if (traccarPosition == null) {
+    return {};
+  }
+  final firestoreData = mapToFirestore(traccarPosition.toMap());
+
+  // Add any Firestore field values
+  traccarPosition.firestoreUtilData.fieldValues
+      .forEach((k, v) => firestoreData[k] = v);
+
+  return forFieldValue ? mergeNestedFields(firestoreData) : firestoreData;
+}
+
+List<Map<String, dynamic>> getTraccarPositionListFirestoreData(
+  List<TraccarPositionStruct>? traccarPositions,
+) =>
+    traccarPositions
+        ?.map((e) => getTraccarPositionFirestoreData(e, true))
+        .toList() ??
+    [];

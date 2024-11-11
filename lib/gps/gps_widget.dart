@@ -5,7 +5,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/instant_timer.dart';
 import 'dart:async';
-import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -25,6 +24,7 @@ class _GpsWidgetState extends State<GpsWidget> {
   late GpsModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  LatLng? currentUserLocationValue;
 
   @override
   void initState() {
@@ -33,10 +33,15 @@ class _GpsWidgetState extends State<GpsWidget> {
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      currentUserLocationValue =
+          await getCurrentUserLocation(defaultLocation: const LatLng(0.0, 0.0));
       _model.instantTimer = InstantTimer.periodic(
         duration: const Duration(milliseconds: 5000),
         callback: (timer) async {
-          await action_blocks.setBufferOfLocation(context);
+          currentUserLocationValue =
+              await getCurrentUserLocation(defaultLocation: const LatLng(0.0, 0.0));
+          FFAppState().ultimaPosicionInformadaAppState =
+              currentUserLocationValue;
           unawaited(
             () async {
               await _model.googleMapsController.future.then(
@@ -115,6 +120,7 @@ class _GpsWidgetState extends State<GpsWidget> {
               FFAppState().vehiculoActualmenteConduciendoAppState = 0;
 
               FFAppState().update(() {});
+              _model.instantTimer?.cancel();
 
               context.pushNamed('HomePage');
             },
@@ -145,7 +151,8 @@ class _GpsWidgetState extends State<GpsWidget> {
                       FFAppState().ultimaPosicionInformadaAppState;
                   return FlutterFlowGoogleMap(
                     controller: _model.googleMapsController,
-                    onCameraIdle: (latLng) => _model.googleMapsCenter = latLng,
+                    onCameraIdle: (latLng) =>
+                        safeSetState(() => _model.googleMapsCenter = latLng),
                     initialLocation: _model.googleMapsCenter ??=
                         const LatLng(13.106061, -59.613158),
                     markers: [
@@ -155,7 +162,7 @@ class _GpsWidgetState extends State<GpsWidget> {
                           googleMapMarker,
                         ),
                     ],
-                    markerColor: GoogleMarkerColor.magenta,
+                    markerColor: GoogleMarkerColor.red,
                     mapType: MapType.normal,
                     style: GoogleMapStyle.standard,
                     initialZoom: 14.0,
@@ -163,8 +170,8 @@ class _GpsWidgetState extends State<GpsWidget> {
                     allowZoom: true,
                     showZoomControls: true,
                     showLocation: true,
-                    showCompass: false,
-                    showMapToolbar: false,
+                    showCompass: true,
+                    showMapToolbar: true,
                     showTraffic: true,
                     centerMapOnMarkerTap: true,
                   );

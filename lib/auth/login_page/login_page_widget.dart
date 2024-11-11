@@ -1,33 +1,37 @@
+import '/auth/custom_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'login_model.dart';
-export 'login_model.dart';
+import 'login_page_model.dart';
+export 'login_page_model.dart';
 
-class LoginWidget extends StatefulWidget {
-  const LoginWidget({super.key});
+class LoginPageWidget extends StatefulWidget {
+  const LoginPageWidget({super.key});
 
   @override
-  State<LoginWidget> createState() => _LoginWidgetState();
+  State<LoginPageWidget> createState() => _LoginPageWidgetState();
 }
 
-class _LoginWidgetState extends State<LoginWidget> {
-  late LoginModel _model;
+class _LoginPageWidgetState extends State<LoginPageWidget> {
+  late LoginPageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => LoginModel());
+    _model = createModel(context, () => LoginPageModel());
 
-    _model.emailAddressTextController ??= TextEditingController();
-    _model.emailAddressFocusNode ??= FocusNode();
+    _model.inputNombreTextController ??= TextEditingController();
+    _model.inputNombreFocusNode ??= FocusNode();
 
-    _model.passwordTextController ??= TextEditingController();
-    _model.passwordFocusNode ??= FocusNode();
+    _model.inputContrasenaTextController ??= TextEditingController();
+    _model.inputContrasenaFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
@@ -83,7 +87,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 32.0, 0.0, 0.0, 0.0),
                             child: Text(
-                              'brand.ai',
+                              'el.transportador',
                               style: FlutterFlowTheme.of(context)
                                   .displaySmall
                                   .override(
@@ -107,7 +111,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Welcome Back',
+                                  'Inicio de sesión',
                                   style: FlutterFlowTheme.of(context)
                                       .displaySmall
                                       .override(
@@ -124,7 +128,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 12.0, 0.0, 24.0),
                                   child: Text(
-                                    'Let\'s get started by filling out the form below.',
+                                    'Ingrese sus credenciales',
                                     style: FlutterFlowTheme.of(context)
                                         .labelMedium
                                         .override(
@@ -146,13 +150,13 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     width: 370.0,
                                     child: TextFormField(
                                       controller:
-                                          _model.emailAddressTextController,
-                                      focusNode: _model.emailAddressFocusNode,
+                                          _model.inputNombreTextController,
+                                      focusNode: _model.inputNombreFocusNode,
                                       autofocus: true,
                                       autofillHints: const [AutofillHints.email],
                                       obscureText: false,
                                       decoration: InputDecoration(
-                                        labelText: 'Email',
+                                        labelText: 'Usuario',
                                         labelStyle: FlutterFlowTheme.of(context)
                                             .labelMedium
                                             .override(
@@ -166,23 +170,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                       FlutterFlowTheme.of(
                                                               context)
                                                           .labelMediumFamily),
-                                            ),
-                                        errorStyle: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMediumFamily,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .error,
-                                              letterSpacing: 0.0,
-                                              useGoogleFonts: GoogleFonts
-                                                      .asMap()
-                                                  .containsKey(
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMediumFamily),
                                             ),
                                         enabledBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
@@ -238,7 +225,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                           ),
                                       keyboardType: TextInputType.emailAddress,
                                       validator: _model
-                                          .emailAddressTextControllerValidator
+                                          .inputNombreTextControllerValidator
                                           .asValidator(context),
                                     ),
                                   ),
@@ -249,13 +236,16 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   child: SizedBox(
                                     width: 370.0,
                                     child: TextFormField(
-                                      controller: _model.passwordTextController,
-                                      focusNode: _model.passwordFocusNode,
+                                      controller:
+                                          _model.inputContrasenaTextController,
+                                      focusNode:
+                                          _model.inputContrasenaFocusNode,
                                       autofocus: true,
                                       autofillHints: const [AutofillHints.password],
-                                      obscureText: !_model.passwordVisibility,
+                                      obscureText:
+                                          !_model.inputContrasenaVisibility,
                                       decoration: InputDecoration(
-                                        labelText: 'Password',
+                                        labelText: 'Contraseña',
                                         labelStyle: FlutterFlowTheme.of(context)
                                             .labelMedium
                                             .override(
@@ -311,13 +301,15 @@ class _LoginWidgetState extends State<LoginWidget> {
                                             .primaryBackground,
                                         suffixIcon: InkWell(
                                           onTap: () => safeSetState(
-                                            () => _model.passwordVisibility =
-                                                !_model.passwordVisibility,
+                                            () => _model
+                                                    .inputContrasenaVisibility =
+                                                !_model
+                                                    .inputContrasenaVisibility,
                                           ),
                                           focusNode:
                                               FocusNode(skipTraversal: true),
                                           child: Icon(
-                                            _model.passwordVisibility
+                                            _model.inputContrasenaVisibility
                                                 ? Icons.visibility_outlined
                                                 : Icons.visibility_off_outlined,
                                             color: FlutterFlowTheme.of(context)
@@ -339,7 +331,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                         .bodyMediumFamily),
                                           ),
                                       validator: _model
-                                          .passwordTextControllerValidator
+                                          .inputContrasenaTextControllerValidator
                                           .asValidator(context),
                                     ),
                                   ),
@@ -348,10 +340,70 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 16.0),
                                   child: FFButtonWidget(
-                                    onPressed: () {
-                                      print('Button pressed ...');
+                                    onPressed: () async {
+                                      Function() navigate = () {};
+                                      _model.apiLoginResult =
+                                          await TransportadorPostaAtuhApiGroup
+                                              .loginCall
+                                              .call(
+                                        nombre: _model
+                                            .inputNombreTextController.text,
+                                        contrasena: _model
+                                            .inputContrasenaTextController.text,
+                                      );
+
+                                      if ((_model.apiLoginResult?.succeeded ??
+                                          true)) {
+                                        GoRouter.of(context).prepareAuthEvent();
+                                        await authManager.signIn(
+                                          authenticationToken:
+                                              TransportadorPostaAtuhApiGroup
+                                                  .loginCall
+                                                  .token(
+                                            (_model.apiLoginResult?.jsonBody ??
+                                                ''),
+                                          ),
+                                          userData: UserDataStruct(
+                                            nombre:
+                                                TransportadorPostaAtuhApiGroup
+                                                    .loginCall
+                                                    .nombre(
+                                              (_model.apiLoginResult
+                                                      ?.jsonBody ??
+                                                  ''),
+                                            ),
+                                            contrasena:
+                                                UserDataStruct.maybeFromMap(
+                                                        (_model.apiLoginResult
+                                                                ?.jsonBody ??
+                                                            ''))
+                                                    ?.contrasena,
+                                            rol: functions.fromStringToRol(
+                                                TransportadorPostaAtuhApiGroup
+                                                    .loginCall
+                                                    .rol(
+                                              (_model.apiLoginResult
+                                                      ?.jsonBody ??
+                                                  ''),
+                                            )),
+                                            id: TransportadorPostaAtuhApiGroup
+                                                .loginCall
+                                                .id(
+                                              (_model.apiLoginResult
+                                                      ?.jsonBody ??
+                                                  ''),
+                                            ),
+                                          ),
+                                        );
+                                        navigate = () => context.goNamedAuth(
+                                            'HomePage', context.mounted);
+                                      }
+
+                                      navigate();
+
+                                      safeSetState(() {});
                                     },
-                                    text: 'Sign In',
+                                    text: 'Acceder',
                                     options: FFButtonOptions(
                                       width: 370.0,
                                       height: 44.0,
@@ -381,57 +433,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                                         width: 1.0,
                                       ),
                                       borderRadius: BorderRadius.circular(12.0),
-                                    ),
-                                  ),
-                                ),
-
-                                // You will have to add an action on this rich text to go to your login page.
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 12.0, 0.0, 12.0),
-                                  child: RichText(
-                                    textScaler:
-                                        MediaQuery.of(context).textScaler,
-                                    text: TextSpan(
-                                      children: [
-                                        const TextSpan(
-                                          text: 'Don\'t have an account? ',
-                                          style: TextStyle(),
-                                        ),
-                                        TextSpan(
-                                          text: ' Sign Up here',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMediumFamily,
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primary,
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w600,
-                                                useGoogleFonts: GoogleFonts
-                                                        .asMap()
-                                                    .containsKey(
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .bodyMediumFamily),
-                                              ),
-                                        )
-                                      ],
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMediumFamily,
-                                            letterSpacing: 0.0,
-                                            useGoogleFonts: GoogleFonts.asMap()
-                                                .containsKey(
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMediumFamily),
-                                          ),
                                     ),
                                   ),
                                 ),

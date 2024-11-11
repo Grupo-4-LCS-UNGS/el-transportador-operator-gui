@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '/backend/backend.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:csv/csv.dart';
 import 'package:synchronized/synchronized.dart';
@@ -28,6 +29,17 @@ class FFAppState extends ChangeNotifier {
       _vehiculoActualmenteConduciendoAppState = await secureStorage
               .getInt('ff_vehiculoActualmenteConduciendoAppState') ??
           _vehiculoActualmenteConduciendoAppState;
+    });
+    await _safeInitAsync(() async {
+      _estaLogeado =
+          await secureStorage.getBool('ff_estaLogeado') ?? _estaLogeado;
+    });
+    await _safeInitAsync(() async {
+      _ultimaActividadApp =
+          await secureStorage.read(key: 'ff_ultimaActividadApp') != null
+              ? DateTime.fromMillisecondsSinceEpoch(
+                  (await secureStorage.getInt('ff_ultimaActividadApp'))!)
+              : _ultimaActividadApp;
     });
   }
 
@@ -66,6 +78,32 @@ class FFAppState extends ChangeNotifier {
 
   void deleteVehiculoActualmenteConduciendoAppState() {
     secureStorage.delete(key: 'ff_vehiculoActualmenteConduciendoAppState');
+  }
+
+  bool _estaLogeado = false;
+  bool get estaLogeado => _estaLogeado;
+  set estaLogeado(bool value) {
+    _estaLogeado = value;
+    secureStorage.setBool('ff_estaLogeado', value);
+  }
+
+  void deleteEstaLogeado() {
+    secureStorage.delete(key: 'ff_estaLogeado');
+  }
+
+  DateTime? _ultimaActividadApp =
+      DateTime.fromMillisecondsSinceEpoch(1731202320000);
+  DateTime? get ultimaActividadApp => _ultimaActividadApp;
+  set ultimaActividadApp(DateTime? value) {
+    _ultimaActividadApp = value;
+    value != null
+        ? secureStorage.setInt(
+            'ff_ultimaActividadApp', value.millisecondsSinceEpoch)
+        : secureStorage.remove('ff_ultimaActividadApp');
+  }
+
+  void deleteUltimaActividadApp() {
+    secureStorage.delete(key: 'ff_ultimaActividadApp');
   }
 }
 

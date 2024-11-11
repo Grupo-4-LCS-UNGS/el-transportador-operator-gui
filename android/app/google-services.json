@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "437832352814",
+    "project_id": "g4-eltransportador",
+    "storage_bucket": "g4-eltransportador.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437832352814:android:8f1993981bf0c48fa04bbf",
+        "android_client_info": {
+          "package_name": "ar.loge.g4.operador"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrsvJqxY7XwQ20OI5kJj3_bdJs4xTN-SQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
