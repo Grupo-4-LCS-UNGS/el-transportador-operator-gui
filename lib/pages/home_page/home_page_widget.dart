@@ -77,8 +77,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             ),
             actions: [
               FFButtonWidget(
-                onPressed: () {
-                  print('Button pressed ...');
+                onPressed: () async {
+                  context.pushNamed(
+                    'mi_perfil',
+                    extra: <String, dynamic>{
+                      kTransitionInfoKey: const TransitionInfo(
+                        hasTransition: true,
+                        transitionType: PageTransitionType.leftToRight,
+                      ),
+                    },
+                  );
                 },
                 text: currentUserData!.rol!.name,
                 options: FFButtonOptions(
@@ -303,13 +311,21 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                             ?.text =
                                                         _model
                                                             .scannedIdVehicule;
-                                                    _model.textController
-                                                            ?.selection =
-                                                        TextSelection.collapsed(
-                                                            offset: _model
-                                                                .textController!
-                                                                .text
-                                                                .length);
+                                                    _model.textFieldFocusNode
+                                                        ?.requestFocus();
+                                                    WidgetsBinding.instance
+                                                        .addPostFrameCallback(
+                                                            (_) {
+                                                      _model.textController
+                                                              ?.selection =
+                                                          TextSelection
+                                                              .collapsed(
+                                                        offset: _model
+                                                            .textController!
+                                                            .text
+                                                            .length,
+                                                      );
+                                                    });
                                                   });
 
                                                   safeSetState(() {});
