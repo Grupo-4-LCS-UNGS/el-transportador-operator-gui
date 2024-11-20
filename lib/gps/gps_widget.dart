@@ -102,19 +102,25 @@ class _GpsWidgetState extends State<GpsWidget> {
         resizeToAvoidBottomInset: false,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         appBar: AppBar(
-          backgroundColor: FlutterFlowTheme.of(context).primary,
+          backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
           automaticallyImplyLeading: false,
           leading: FlutterFlowIconButton(
             borderColor: Colors.transparent,
             borderRadius: 30.0,
             borderWidth: 1.0,
             buttonSize: 60.0,
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back_rounded,
-              color: Colors.white,
+              color: FlutterFlowTheme.of(context).primaryText,
               size: 30.0,
             ),
             onPressed: () async {
+              _model.pu =
+                  await TransportadorApiGroup.vehiculoCambiarEstadoxIDCall.call(
+                id: FFAppState().vehiculoActualmenteConduciendoAppState,
+                estado: 'Disponible',
+              );
+
               FFAppState().estaManejandoAppState = false;
               FFAppState().deleteVehiculoActualmenteConduciendoAppState();
               FFAppState().vehiculoActualmenteConduciendoAppState = 0;
@@ -123,13 +129,15 @@ class _GpsWidgetState extends State<GpsWidget> {
               _model.instantTimer?.cancel();
 
               context.pushNamed('HomePage');
+
+              safeSetState(() {});
             },
           ),
           title: Text(
             'Conduciendo',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: FlutterFlowTheme.of(context).headlineMediumFamily,
-                  color: Colors.white,
+                  color: FlutterFlowTheme.of(context).primaryText,
                   fontSize: 22.0,
                   letterSpacing: 0.0,
                   useGoogleFonts: GoogleFonts.asMap().containsKey(

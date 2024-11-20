@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../schema/structs/index.dart';
 
 import 'package:flutter/foundation.dart';
 
@@ -180,6 +181,9 @@ class TransportadorApiGroup {
     'Authorization': 'Bearer [token]',
   };
   static DatosDelUsuarioCall datosDelUsuarioCall = DatosDelUsuarioCall();
+  static VehiculoxIDCall vehiculoxIDCall = VehiculoxIDCall();
+  static VehiculoCambiarEstadoxIDCall vehiculoCambiarEstadoxIDCall =
+      VehiculoCambiarEstadoxIDCall();
 }
 
 class DatosDelUsuarioCall {
@@ -206,6 +210,109 @@ class DatosDelUsuarioCall {
       alwaysAllowBody: false,
     );
   }
+}
+
+class VehiculoxIDCall {
+  Future<ApiCallResponse> call({
+    int? id,
+    String? token = '',
+  }) async {
+    final baseUrl = TransportadorApiGroup.getBaseUrl(
+      token: token,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'VehiculoxID',
+      apiUrl: '$baseUrl/vehiculos/$id',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  String? estado(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.estado''',
+      ));
+  int? id(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.id''',
+      ));
+  int? kilmetraje(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.kilometraje''',
+      ));
+  String? matricula(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.matricula''',
+      ));
+  ModeloAutoStruct? modelo(dynamic response) =>
+      ModeloAutoStruct.maybeFromMap(getJsonField(
+        response,
+        r'''$.modelo''',
+      ));
+}
+
+class VehiculoCambiarEstadoxIDCall {
+  Future<ApiCallResponse> call({
+    int? id,
+    String? estado = '',
+    String? token = '',
+  }) async {
+    final baseUrl = TransportadorApiGroup.getBaseUrl(
+      token: token,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'VehiculoCambiarEstadoxID',
+      apiUrl: '$baseUrl/vehiculos/estadoXid',
+      callType: ApiCallType.PUT,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      params: {
+        'id': id,
+        'estado': estado,
+      },
+      bodyType: BodyType.MULTIPART,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  String? estado(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.estado''',
+      ));
+  int? id(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.id''',
+      ));
+  int? kilmetraje(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.kilometraje''',
+      ));
+  String? matricula(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.matricula''',
+      ));
+  ModeloAutoStruct? modelo(dynamic response) =>
+      ModeloAutoStruct.maybeFromMap(getJsonField(
+        response,
+        r'''$.modelo''',
+      ));
 }
 
 /// End Transportador Api Group Code

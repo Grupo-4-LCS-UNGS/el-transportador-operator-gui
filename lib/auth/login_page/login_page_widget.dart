@@ -49,7 +49,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         body: SafeArea(
           top: true,
           child: Row(
@@ -61,7 +61,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                   width: 100.0,
                   height: double.infinity,
                   decoration: BoxDecoration(
-                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                    color: FlutterFlowTheme.of(context).primaryBackground,
                   ),
                   alignment: const AlignmentDirectional(0.0, -1.0),
                   child: SingleChildScrollView(
@@ -69,36 +69,87 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          width: double.infinity,
-                          height: 140.0,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(16.0),
-                              bottomRight: Radius.circular(16.0),
-                              topLeft: Radius.circular(0.0),
-                              topRight: Radius.circular(0.0),
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Material(
+                            color: Colors.transparent,
+                            elevation: 25.0,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(32.0),
+                                bottomRight: Radius.circular(32.0),
+                                topLeft: Radius.circular(32.0),
+                                topRight: Radius.circular(32.0),
+                              ),
                             ),
-                          ),
-                          alignment: const AlignmentDirectional(-1.0, 0.0),
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                32.0, 0.0, 0.0, 0.0),
-                            child: Text(
-                              'el.transportador',
-                              style: FlutterFlowTheme.of(context)
-                                  .displaySmall
-                                  .override(
-                                    fontFamily: FlutterFlowTheme.of(context)
-                                        .displaySmallFamily,
-                                    letterSpacing: 0.0,
-                                    useGoogleFonts: GoogleFonts.asMap()
-                                        .containsKey(
-                                            FlutterFlowTheme.of(context)
-                                                .displaySmallFamily),
+                            child: Container(
+                              width: double.infinity,
+                              height: 158.0,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(32.0),
+                                  bottomRight: Radius.circular(32.0),
+                                  topLeft: Radius.circular(32.0),
+                                  topRight: Radius.circular(32.0),
+                                ),
+                              ),
+                              alignment: const AlignmentDirectional(0.0, 0.0),
+                              child: Align(
+                                alignment: const AlignmentDirectional(0.0, 0.0),
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 0.0, 25.0),
+                                  child: Wrap(
+                                    spacing: 0.0,
+                                    runSpacing: 0.0,
+                                    alignment: WrapAlignment.center,
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.start,
+                                    direction: Axis.horizontal,
+                                    runAlignment: WrapAlignment.start,
+                                    verticalDirection: VerticalDirection.down,
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        child: Image.asset(
+                                          Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? 'assets/images/Logo-Dark.png'
+                                              : 'assets/images/Logo-Light.png',
+                                          width: 108.0,
+                                          height: 91.0,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 0.0, 0.0, 0.0),
+                                        child: Text(
+                                          'El Transportador',
+                                          style: FlutterFlowTheme.of(context)
+                                              .displaySmall
+                                              .override(
+                                                fontFamily:
+                                                    FlutterFlowTheme.of(context)
+                                                        .displaySmallFamily,
+                                                letterSpacing: 0.0,
+                                                useGoogleFonts: GoogleFonts
+                                                        .asMap()
+                                                    .containsKey(
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .displaySmallFamily),
+                                              ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -110,37 +161,49 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                               mainAxisSize: MainAxisSize.max,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Inicio de sesión',
-                                  style: FlutterFlowTheme.of(context)
-                                      .displaySmall
-                                      .override(
-                                        fontFamily: FlutterFlowTheme.of(context)
-                                            .displaySmallFamily,
-                                        letterSpacing: 0.0,
-                                        useGoogleFonts: GoogleFonts.asMap()
-                                            .containsKey(
-                                                FlutterFlowTheme.of(context)
-                                                    .displaySmallFamily),
-                                      ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 12.0, 0.0, 24.0),
+                                Align(
+                                  alignment: const AlignmentDirectional(0.0, 0.0),
                                   child: Text(
-                                    'Ingrese sus credenciales',
+                                    'Operadores',
                                     style: FlutterFlowTheme.of(context)
-                                        .labelMedium
+                                        .displaySmall
                                         .override(
                                           fontFamily:
                                               FlutterFlowTheme.of(context)
-                                                  .labelMediumFamily,
+                                                  .displaySmallFamily,
+                                          color: FlutterFlowTheme.of(context)
+                                              .onPrimaryContainer,
+                                          fontSize: 26.0,
                                           letterSpacing: 0.0,
+                                          fontWeight: FontWeight.w600,
+                                          fontStyle: FontStyle.italic,
                                           useGoogleFonts: GoogleFonts.asMap()
                                               .containsKey(
                                                   FlutterFlowTheme.of(context)
-                                                      .labelMediumFamily),
+                                                      .displaySmallFamily),
                                         ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  child: Padding(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 12.0, 0.0, 24.0),
+                                    child: Text(
+                                      'Ingrese sus credenciales',
+                                      style: FlutterFlowTheme.of(context)
+                                          .headlineSmall
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .headlineSmallFamily,
+                                            letterSpacing: 0.0,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .headlineSmallFamily),
+                                          ),
+                                    ),
                                   ),
                                 ),
                                 Padding(
@@ -174,7 +237,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                         enabledBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
-                                                .primaryBackground,
+                                                .accent1,
                                             width: 2.0,
                                           ),
                                           borderRadius:
@@ -209,7 +272,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                         ),
                                         filled: true,
                                         fillColor: FlutterFlowTheme.of(context)
-                                            .primaryBackground,
+                                            .secondaryBackground,
                                       ),
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
@@ -252,6 +315,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                               fontFamily:
                                                   FlutterFlowTheme.of(context)
                                                       .labelMediumFamily,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
                                               letterSpacing: 0.0,
                                               useGoogleFonts: GoogleFonts
                                                       .asMap()
@@ -263,7 +329,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                         enabledBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: FlutterFlowTheme.of(context)
-                                                .primaryBackground,
+                                                .accent1,
                                             width: 2.0,
                                           ),
                                           borderRadius:
@@ -298,7 +364,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                         ),
                                         filled: true,
                                         fillColor: FlutterFlowTheme.of(context)
-                                            .primaryBackground,
+                                            .secondaryBackground,
                                         suffixIcon: InkWell(
                                           onTap: () => safeSetState(
                                             () => _model

@@ -63,6 +63,16 @@ abstract class FlutterFlowTheme {
   late Color error;
   late Color info;
 
+  late Color onPrimary;
+  late Color primaryContainer;
+  late Color secondaryContainer;
+  late Color tertiaryContainer;
+  late Color onPrimaryContainer;
+  late Color onSecondaryContainer;
+  late Color onTertiaryContainer;
+  late Color onSecundary;
+  late Color onTerteary;
+
   @Deprecated('Use displaySmallFamily instead')
   String get title1Family => displaySmallFamily;
   @Deprecated('Use displaySmall instead')
@@ -149,22 +159,32 @@ class LightModeTheme extends FlutterFlowTheme {
   @Deprecated('Use tertiary instead')
   Color get tertiaryColor => tertiary;
 
-  late Color primary = const Color(0xFF274273);
-  late Color secondary = const Color(0xFF508AA8);
-  late Color tertiary = const Color(0xFFBA1200);
-  late Color alternate = const Color(0xFF9DD1F1);
-  late Color primaryText = const Color(0xFF031927);
-  late Color secondaryText = const Color(0xFF508AA8);
-  late Color primaryBackground = const Color(0xFFFFFFFF);
-  late Color secondaryBackground = const Color(0xFFC8E0F4);
-  late Color accent1 = const Color(0xFFBA1200);
+  late Color primary = const Color(0xFF4E3DF2);
+  late Color secondary = const Color(0xFF3B60E4);
+  late Color tertiary = const Color(0xFFC8ADC0);
+  late Color alternate = const Color(0xFFC5C0FF);
+  late Color primaryText = const Color(0xFF1C1B1F);
+  late Color secondaryText = const Color(0xFF47464F);
+  late Color primaryBackground = const Color(0xFFE2E2E2);
+  late Color secondaryBackground = const Color(0xFFE5E1EC);
+  late Color accent1 = const Color(0xFFFFFFFF);
   late Color accent2 = const Color(0xFF508AA8);
   late Color accent3 = const Color(0xFF9DD1F1);
   late Color accent4 = const Color(0xFFC8E0F4);
-  late Color success = const Color(0xFF28A745);
-  late Color warning = const Color(0xFFFFC107);
-  late Color error = const Color(0xFFBA1200);
-  late Color info = const Color(0xFF508AA8);
+  late Color success = const Color(0xFF006E21);
+  late Color warning = const Color(0xD3FEF75C);
+  late Color error = const Color(0xFFBA1B1B);
+  late Color info = const Color(0xFF39656B);
+
+  late Color onPrimary = const Color(0xFFFFFFFF);
+  late Color primaryContainer = const Color(0xFF03343F);
+  late Color secondaryContainer = const Color(0xFFE3DFF9);
+  late Color tertiaryContainer = const Color(0xFFFFD8EB);
+  late Color onPrimaryContainer = const Color(0xFF0F006A);
+  late Color onSecondaryContainer = const Color(0xFF1A1A2C);
+  late Color onTertiaryContainer = const Color(0xFF2F1123);
+  late Color onSecundary = const Color(0xFFFFFFFF);
+  late Color onTerteary = const Color(0xFFFFFFFF);
 }
 
 abstract class Typography {
@@ -205,107 +225,107 @@ class MobileTypography extends Typography {
 
   final FlutterFlowTheme theme;
 
-  String get displayLargeFamily => 'League Spartan';
+  String get displayLargeFamily => 'Ubuntu';
   TextStyle get displayLarge => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 64.0,
       );
-  String get displayMediumFamily => 'League Spartan';
+  String get displayMediumFamily => 'Ubuntu';
   TextStyle get displayMedium => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 44.0,
       );
-  String get displaySmallFamily => 'League Spartan';
+  String get displaySmallFamily => 'Ubuntu';
   TextStyle get displaySmall => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 36.0,
       );
-  String get headlineLargeFamily => 'League Spartan';
+  String get headlineLargeFamily => 'Ubuntu';
   TextStyle get headlineLarge => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 32.0,
       );
-  String get headlineMediumFamily => 'League Spartan';
+  String get headlineMediumFamily => 'Ubuntu';
   TextStyle get headlineMedium => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 28.0,
       );
-  String get headlineSmallFamily => 'League Spartan';
+  String get headlineSmallFamily => 'Ubuntu';
   TextStyle get headlineSmall => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 24.0,
       );
-  String get titleLargeFamily => 'League Spartan';
+  String get titleLargeFamily => 'Ubuntu';
   TextStyle get titleLarge => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 20.0,
       );
-  String get titleMediumFamily => 'League Spartan';
+  String get titleMediumFamily => 'Ubuntu';
   TextStyle get titleMedium => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 18.0,
       );
-  String get titleSmallFamily => 'League Spartan';
+  String get titleSmallFamily => 'Ubuntu';
   TextStyle get titleSmall => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 16.0,
       );
-  String get labelLargeFamily => 'Inter';
+  String get labelLargeFamily => 'Roboto Mono';
   TextStyle get labelLarge => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.secondaryText,
         fontWeight: FontWeight.normal,
         fontSize: 16.0,
       );
-  String get labelMediumFamily => 'Inter';
+  String get labelMediumFamily => 'Roboto Mono';
   TextStyle get labelMedium => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.secondaryText,
         fontWeight: FontWeight.normal,
         fontSize: 14.0,
       );
-  String get labelSmallFamily => 'Inter';
+  String get labelSmallFamily => 'Roboto Mono';
   TextStyle get labelSmall => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.secondaryText,
         fontWeight: FontWeight.normal,
         fontSize: 12.0,
       );
-  String get bodyLargeFamily => 'Inter';
+  String get bodyLargeFamily => 'Roboto Mono';
   TextStyle get bodyLarge => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.primaryText,
         fontWeight: FontWeight.normal,
         fontSize: 16.0,
       );
-  String get bodyMediumFamily => 'Inter';
+  String get bodyMediumFamily => 'Roboto Mono';
   TextStyle get bodyMedium => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.primaryText,
         fontWeight: FontWeight.normal,
         fontSize: 14.0,
       );
-  String get bodySmallFamily => 'Inter';
+  String get bodySmallFamily => 'Roboto Mono';
   TextStyle get bodySmall => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.primaryText,
         fontWeight: FontWeight.normal,
         fontSize: 12.0,
@@ -317,107 +337,107 @@ class TabletTypography extends Typography {
 
   final FlutterFlowTheme theme;
 
-  String get displayLargeFamily => 'League Spartan';
+  String get displayLargeFamily => 'Ubuntu';
   TextStyle get displayLarge => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 64.0,
       );
-  String get displayMediumFamily => 'League Spartan';
+  String get displayMediumFamily => 'Ubuntu';
   TextStyle get displayMedium => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 44.0,
       );
-  String get displaySmallFamily => 'League Spartan';
+  String get displaySmallFamily => 'Ubuntu';
   TextStyle get displaySmall => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 36.0,
       );
-  String get headlineLargeFamily => 'League Spartan';
+  String get headlineLargeFamily => 'Ubuntu';
   TextStyle get headlineLarge => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 32.0,
       );
-  String get headlineMediumFamily => 'League Spartan';
+  String get headlineMediumFamily => 'Ubuntu';
   TextStyle get headlineMedium => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 28.0,
       );
-  String get headlineSmallFamily => 'League Spartan';
+  String get headlineSmallFamily => 'Ubuntu';
   TextStyle get headlineSmall => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 24.0,
       );
-  String get titleLargeFamily => 'League Spartan';
+  String get titleLargeFamily => 'Ubuntu';
   TextStyle get titleLarge => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 20.0,
       );
-  String get titleMediumFamily => 'League Spartan';
+  String get titleMediumFamily => 'Ubuntu';
   TextStyle get titleMedium => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 18.0,
       );
-  String get titleSmallFamily => 'League Spartan';
+  String get titleSmallFamily => 'Ubuntu';
   TextStyle get titleSmall => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 16.0,
       );
-  String get labelLargeFamily => 'Inter';
+  String get labelLargeFamily => 'Roboto Mono';
   TextStyle get labelLarge => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.secondaryText,
         fontWeight: FontWeight.normal,
         fontSize: 16.0,
       );
-  String get labelMediumFamily => 'Inter';
+  String get labelMediumFamily => 'Roboto Mono';
   TextStyle get labelMedium => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.secondaryText,
         fontWeight: FontWeight.normal,
         fontSize: 14.0,
       );
-  String get labelSmallFamily => 'Inter';
+  String get labelSmallFamily => 'Roboto Mono';
   TextStyle get labelSmall => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.secondaryText,
         fontWeight: FontWeight.normal,
         fontSize: 12.0,
       );
-  String get bodyLargeFamily => 'Inter';
+  String get bodyLargeFamily => 'Roboto Mono';
   TextStyle get bodyLarge => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.primaryText,
         fontWeight: FontWeight.normal,
         fontSize: 16.0,
       );
-  String get bodyMediumFamily => 'Inter';
+  String get bodyMediumFamily => 'Roboto Mono';
   TextStyle get bodyMedium => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.primaryText,
         fontWeight: FontWeight.normal,
         fontSize: 14.0,
       );
-  String get bodySmallFamily => 'Inter';
+  String get bodySmallFamily => 'Roboto Mono';
   TextStyle get bodySmall => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.primaryText,
         fontWeight: FontWeight.normal,
         fontSize: 12.0,
@@ -429,107 +449,107 @@ class DesktopTypography extends Typography {
 
   final FlutterFlowTheme theme;
 
-  String get displayLargeFamily => 'League Spartan';
+  String get displayLargeFamily => 'Ubuntu';
   TextStyle get displayLarge => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 64.0,
       );
-  String get displayMediumFamily => 'League Spartan';
+  String get displayMediumFamily => 'Ubuntu';
   TextStyle get displayMedium => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 44.0,
       );
-  String get displaySmallFamily => 'League Spartan';
+  String get displaySmallFamily => 'Ubuntu';
   TextStyle get displaySmall => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 36.0,
       );
-  String get headlineLargeFamily => 'League Spartan';
+  String get headlineLargeFamily => 'Ubuntu';
   TextStyle get headlineLarge => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 32.0,
       );
-  String get headlineMediumFamily => 'League Spartan';
+  String get headlineMediumFamily => 'Ubuntu';
   TextStyle get headlineMedium => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 28.0,
       );
-  String get headlineSmallFamily => 'League Spartan';
+  String get headlineSmallFamily => 'Ubuntu';
   TextStyle get headlineSmall => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 24.0,
       );
-  String get titleLargeFamily => 'League Spartan';
+  String get titleLargeFamily => 'Ubuntu';
   TextStyle get titleLarge => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 20.0,
       );
-  String get titleMediumFamily => 'League Spartan';
+  String get titleMediumFamily => 'Ubuntu';
   TextStyle get titleMedium => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 18.0,
       );
-  String get titleSmallFamily => 'League Spartan';
+  String get titleSmallFamily => 'Ubuntu';
   TextStyle get titleSmall => GoogleFonts.getFont(
-        'League Spartan',
+        'Ubuntu',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 16.0,
       );
-  String get labelLargeFamily => 'Inter';
+  String get labelLargeFamily => 'Roboto Mono';
   TextStyle get labelLarge => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.secondaryText,
         fontWeight: FontWeight.normal,
         fontSize: 16.0,
       );
-  String get labelMediumFamily => 'Inter';
+  String get labelMediumFamily => 'Roboto Mono';
   TextStyle get labelMedium => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.secondaryText,
         fontWeight: FontWeight.normal,
         fontSize: 14.0,
       );
-  String get labelSmallFamily => 'Inter';
+  String get labelSmallFamily => 'Roboto Mono';
   TextStyle get labelSmall => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.secondaryText,
         fontWeight: FontWeight.normal,
         fontSize: 12.0,
       );
-  String get bodyLargeFamily => 'Inter';
+  String get bodyLargeFamily => 'Roboto Mono';
   TextStyle get bodyLarge => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.primaryText,
         fontWeight: FontWeight.normal,
         fontSize: 16.0,
       );
-  String get bodyMediumFamily => 'Inter';
+  String get bodyMediumFamily => 'Roboto Mono';
   TextStyle get bodyMedium => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.primaryText,
         fontWeight: FontWeight.normal,
         fontSize: 14.0,
       );
-  String get bodySmallFamily => 'Inter';
+  String get bodySmallFamily => 'Roboto Mono';
   TextStyle get bodySmall => GoogleFonts.getFont(
-        'Inter',
+        'Roboto Mono',
         color: theme.primaryText,
         fontWeight: FontWeight.normal,
         fontSize: 12.0,
@@ -544,22 +564,32 @@ class DarkModeTheme extends FlutterFlowTheme {
   @Deprecated('Use tertiary instead')
   Color get tertiaryColor => tertiary;
 
-  late Color primary = const Color(0xFF001537);
-  late Color secondary = const Color(0xFF0E1626);
-  late Color tertiary = const Color(0xFF240D27);
+  late Color primary = const Color(0xFFC5C0FF);
+  late Color secondary = const Color(0xFFC7C4DD);
+  late Color tertiary = const Color(0xFFEAB9D1);
   late Color alternate = const Color(0xFF031927);
-  late Color primaryText = const Color(0xFFFBFAFF);
+  late Color primaryText = const Color(0xFFE5E1E6);
   late Color secondaryText = const Color(0xFFC9CAD4);
-  late Color primaryBackground = const Color(0xFF282A2F);
-  late Color secondaryBackground = const Color(0xFF1E1F25);
+  late Color primaryBackground = const Color(0xFF1C1B1F);
+  late Color secondaryBackground = const Color(0xFF47464F);
   late Color accent1 = const Color(0xFF7790C7);
   late Color accent2 = const Color(0xFF8990A5);
   late Color accent3 = const Color(0xFFA687A7);
   late Color accent4 = const Color(0xFFFFBAB1);
-  late Color success = const Color(0xFF28A745);
-  late Color warning = const Color(0xFFFFC107);
-  late Color error = const Color(0xFFFF5449);
-  late Color info = const Color(0xFF9DD1F1);
+  late Color success = const Color(0xFF006E21);
+  late Color warning = const Color(0xD3FEF75C);
+  late Color error = const Color(0xFFBA1B1B);
+  late Color info = const Color(0xFF39656B);
+
+  late Color onPrimary = const Color(0xFF1E00A5);
+  late Color primaryContainer = const Color(0xFF3310DB);
+  late Color secondaryContainer = const Color(0xFF464559);
+  late Color tertiaryContainer = const Color(0xFF603B4F);
+  late Color onPrimaryContainer = const Color(0xFFE3DFFF);
+  late Color onSecondaryContainer = const Color(0xFFE3DFF9);
+  late Color onTertiaryContainer = const Color(0xFFFFD8EB);
+  late Color onSecundary = const Color(0xFF302E42);
+  late Color onTerteary = const Color(0xFF603B4F);
 }
 
 extension TextStyleHelper on TextStyle {

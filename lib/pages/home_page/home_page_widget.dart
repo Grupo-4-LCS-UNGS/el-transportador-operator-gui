@@ -1,4 +1,5 @@
 import '/auth/custom_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -34,12 +35,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     super.initState();
     _model = createModel(context, () => HomePageModel());
 
-    _model.textController ??= TextEditingController(
+    _model.textFieldIdVehiculoTextController ??= TextEditingController(
         text: valueOrDefault<String>(
       _model.scannedIdVehicule,
       '0',
     ));
-    _model.textFieldFocusNode ??= FocusNode();
+    _model.textFieldIdVehiculoFocusNode ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
@@ -94,11 +95,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       const EdgeInsetsDirectional.fromSTEB(16.0, 15.0, 16.0, 15.0),
                   iconPadding:
                       const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                  color: FlutterFlowTheme.of(context).error,
+                  color: FlutterFlowTheme.of(context).onPrimaryContainer,
                   textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                         fontFamily:
                             FlutterFlowTheme.of(context).titleSmallFamily,
-                        color: Colors.white,
+                        color: FlutterFlowTheme.of(context).onPrimary,
                         fontSize: 25.0,
                         letterSpacing: 0.0,
                         useGoogleFonts: GoogleFonts.asMap().containsKey(
@@ -121,7 +122,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 Expanded(
                   child: SizedBox(
                     width: double.infinity,
-                    height: 500.0,
                     child: Stack(
                       children: [
                         Padding(
@@ -307,21 +307,22 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
                                                   HapticFeedback.mediumImpact();
                                                   safeSetState(() {
-                                                    _model.textController
+                                                    _model.textFieldIdVehiculoTextController
                                                             ?.text =
                                                         _model
                                                             .scannedIdVehicule;
-                                                    _model.textFieldFocusNode
+                                                    _model
+                                                        .textFieldIdVehiculoFocusNode
                                                         ?.requestFocus();
                                                     WidgetsBinding.instance
                                                         .addPostFrameCallback(
                                                             (_) {
-                                                      _model.textController
+                                                      _model.textFieldIdVehiculoTextController
                                                               ?.selection =
                                                           TextSelection
                                                               .collapsed(
                                                         offset: _model
-                                                            .textController!
+                                                            .textFieldIdVehiculoTextController!
                                                             .text
                                                             .length,
                                                       );
@@ -342,10 +343,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                 child: SizedBox(
                                                   width: 200.0,
                                                   child: TextFormField(
-                                                    controller:
-                                                        _model.textController,
+                                                    controller: _model
+                                                        .textFieldIdVehiculoTextController,
                                                     focusNode: _model
-                                                        .textFieldFocusNode,
+                                                        .textFieldIdVehiculoFocusNode,
                                                     autofocus: false,
                                                     obscureText: false,
                                                     decoration: InputDecoration(
@@ -360,6 +361,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                 fontFamily: FlutterFlowTheme.of(
                                                                         context)
                                                                     .bodySmallFamily,
+                                                                color: FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .info,
+                                                                fontSize: 14.0,
                                                                 letterSpacing:
                                                                     0.0,
                                                                 useGoogleFonts: GoogleFonts
@@ -447,6 +452,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                               FlutterFlowTheme.of(
                                                                       context)
                                                                   .bodyMediumFamily,
+                                                          fontSize: 22.0,
                                                           letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.w300,
@@ -465,7 +471,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                 context)
                                                             .primaryText,
                                                     validator: _model
-                                                        .textControllerValidator
+                                                        .textFieldIdVehiculoTextControllerValidator
                                                         .asValidator(context),
                                                   ),
                                                 ),
@@ -477,20 +483,123 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                       0.0, 25.0, 0.0, 0.0),
                                               child: FFButtonWidget(
                                                 onPressed: () async {
-                                                  // ActionSaveStateDriving
-                                                  FFAppState()
-                                                          .estaManejandoAppState =
-                                                      true;
-                                                  FFAppState()
-                                                          .vehiculoActualmenteConduciendoAppState =
-                                                      int.parse(_model
-                                                          .textController.text);
+                                                  _model.apiVehiculoEscaneadoResult =
+                                                      await TransportadorApiGroup
+                                                          .vehiculoxIDCall
+                                                          .call(
+                                                    id: int.tryParse(_model
+                                                        .textFieldIdVehiculoTextController
+                                                        .text),
+                                                  );
 
-                                                  context.pushNamed('gps');
+                                                  if ((_model
+                                                          .apiVehiculoEscaneadoResult
+                                                          ?.succeeded ??
+                                                      true)) {
+                                                    if (TransportadorApiGroup
+                                                            .vehiculoxIDCall
+                                                            .estado(
+                                                          (_model.apiVehiculoEscaneadoResult
+                                                                  ?.jsonBody ??
+                                                              ''),
+                                                        ) ==
+                                                        'Disponible') {
+                                                      _model.apiEstadoCambiadoResult =
+                                                          await TransportadorApiGroup
+                                                              .vehiculoCambiarEstadoxIDCall
+                                                              .call(
+                                                        id: int.tryParse(_model
+                                                            .textFieldIdVehiculoTextController
+                                                            .text),
+                                                        estado: 'En Transito',
+                                                      );
+
+                                                      if ((_model
+                                                              .apiEstadoCambiadoResult
+                                                              ?.succeeded ??
+                                                          true)) {
+                                                        HapticFeedback
+                                                            .selectionClick();
+                                                        FFAppState()
+                                                                .estaManejandoAppState =
+                                                            true;
+                                                        FFAppState()
+                                                                .vehiculoActualmenteConduciendoAppState =
+                                                            int.parse(_model
+                                                                .textFieldIdVehiculoTextController
+                                                                .text);
+
+                                                        context.goNamed(
+                                                          'gps',
+                                                          extra: <String,
+                                                              dynamic>{
+                                                            kTransitionInfoKey:
+                                                                const TransitionInfo(
+                                                              hasTransition:
+                                                                  true,
+                                                              transitionType:
+                                                                  PageTransitionType
+                                                                      .fade,
+                                                              duration: Duration(
+                                                                  milliseconds:
+                                                                      800),
+                                                            ),
+                                                          },
+                                                        );
+                                                      }
+                                                    } else {
+                                                      HapticFeedback.vibrate();
+                                                      await showDialog(
+                                                        context: context,
+                                                        builder:
+                                                            (alertDialogContext) {
+                                                          return AlertDialog(
+                                                            title:
+                                                                const Text('Error'),
+                                                            content: const Text(
+                                                                'Ese vehículo no está disponible'),
+                                                            actions: [
+                                                              TextButton(
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        alertDialogContext),
+                                                                child:
+                                                                    const Text('Ok'),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      );
+                                                    }
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      SnackBar(
+                                                        content: Text(
+                                                          'No hay conexión',
+                                                          style: TextStyle(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .error,
+                                                          ),
+                                                        ),
+                                                        duration: const Duration(
+                                                            milliseconds: 4000),
+                                                        backgroundColor:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryBackground,
+                                                      ),
+                                                    );
+                                                  }
+
+                                                  safeSetState(() {});
                                                 },
                                                 text: 'Conducir',
                                                 options: FFButtonOptions(
-                                                  height: 40.0,
+                                                  width: 200.0,
+                                                  height: 60.0,
                                                   padding: const EdgeInsetsDirectional
                                                       .fromSTEB(
                                                           16.0, 0.0, 16.0, 0.0),
@@ -511,6 +620,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                         context)
                                                                     .titleSmallFamily,
                                                             color: Colors.white,
+                                                            fontSize: 28.0,
                                                             letterSpacing: 0.0,
                                                             useGoogleFonts: GoogleFonts
                                                                     .asMap()
@@ -538,32 +648,28 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         ),
                         Align(
                           alignment: const AlignmentDirectional(0.0, 1.0),
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 16.0),
-                            child: smooth_page_indicator.SmoothPageIndicator(
-                              controller: _model.pageViewController ??=
-                                  PageController(initialPage: 0),
-                              count: 2,
-                              axisDirection: Axis.horizontal,
-                              onDotClicked: (i) async {
-                                await _model.pageViewController!.animateToPage(
-                                  i,
-                                  duration: const Duration(milliseconds: 500),
-                                  curve: Curves.ease,
-                                );
-                                safeSetState(() {});
-                              },
-                              effect: smooth_page_indicator.SlideEffect(
-                                spacing: 8.0,
-                                radius: 8.0,
-                                dotWidth: 8.0,
-                                dotHeight: 8.0,
-                                dotColor: FlutterFlowTheme.of(context).accent1,
-                                activeDotColor:
-                                    FlutterFlowTheme.of(context).primary,
-                                paintStyle: PaintingStyle.fill,
-                              ),
+                          child: smooth_page_indicator.SmoothPageIndicator(
+                            controller: _model.pageViewController ??=
+                                PageController(initialPage: 0),
+                            count: 2,
+                            axisDirection: Axis.horizontal,
+                            onDotClicked: (i) async {
+                              await _model.pageViewController!.animateToPage(
+                                i,
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.ease,
+                              );
+                              safeSetState(() {});
+                            },
+                            effect: smooth_page_indicator.SlideEffect(
+                              spacing: 8.0,
+                              radius: 8.0,
+                              dotWidth: 8.0,
+                              dotHeight: 8.0,
+                              dotColor: FlutterFlowTheme.of(context).accent1,
+                              activeDotColor:
+                                  FlutterFlowTheme.of(context).primary,
+                              paintStyle: PaintingStyle.fill,
                             ),
                           ),
                         ),

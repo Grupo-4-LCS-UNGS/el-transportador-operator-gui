@@ -1,3 +1,4 @@
+import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'home_page_widget.dart' show HomePageWidget;
 import 'package:flutter/material.dart';
@@ -14,18 +15,23 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
       ? pageViewController!.page!.round()
       : 0;
   var scannedIdVehicule = '';
-  // State field(s) for TextField widget.
-  FocusNode? textFieldFocusNode;
-  TextEditingController? textController;
-  String? Function(BuildContext, String?)? textControllerValidator;
+  // State field(s) for TextFieldIdVehiculo widget.
+  FocusNode? textFieldIdVehiculoFocusNode;
+  TextEditingController? textFieldIdVehiculoTextController;
+  String? Function(BuildContext, String?)?
+      textFieldIdVehiculoTextControllerValidator;
+  // Stores action output result for [Backend Call - API (VehiculoxID)] action in ButtonConducir widget.
+  ApiCallResponse? apiVehiculoEscaneadoResult;
+  // Stores action output result for [Backend Call - API (VehiculoCambiarEstadoxID)] action in ButtonConducir widget.
+  ApiCallResponse? apiEstadoCambiadoResult;
 
   @override
   void initState(BuildContext context) {}
 
   @override
   void dispose() {
-    textFieldFocusNode?.dispose();
-    textController?.dispose();
+    textFieldIdVehiculoFocusNode?.dispose();
+    textFieldIdVehiculoTextController?.dispose();
   }
 
   /// Action blocks.

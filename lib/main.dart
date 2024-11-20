@@ -89,16 +89,16 @@ class _MyAppState extends State<MyApp> {
         brightness: Brightness.light,
         scrollbarTheme: ScrollbarThemeData(
           thumbVisibility: WidgetStateProperty.all(false),
-          trackVisibility: WidgetStateProperty.all(false),
+          trackVisibility: WidgetStateProperty.all(true),
           interactive: true,
           thumbColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.dragged)) {
               return const Color(0xffffffff);
             }
             if (states.contains(WidgetState.hovered)) {
-              return const Color(0xffba1200);
+              return const Color(0xffffffff);
             }
-            return const Color(0xff508aa8);
+            return const Color(0xffffffff);
           }),
         ),
       ),
@@ -106,16 +106,16 @@ class _MyAppState extends State<MyApp> {
         brightness: Brightness.dark,
         scrollbarTheme: ScrollbarThemeData(
           thumbVisibility: WidgetStateProperty.all(false),
-          trackVisibility: WidgetStateProperty.all(false),
+          trackVisibility: WidgetStateProperty.all(true),
           interactive: true,
           thumbColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.dragged)) {
-              return const Color(0xff282a2f);
-            }
-            if (states.contains(WidgetState.hovered)) {
               return const Color(0xff7790c7);
             }
-            return const Color(0xff8990a5);
+            if (states.contains(WidgetState.hovered)) {
+              return const Color(0xff603b4f);
+            }
+            return const Color(0xff302e42);
           }),
         ),
       ),

@@ -14,6 +14,8 @@ class GpsModel extends FlutterFlowModel<GpsWidget> {
   // State field(s) for GoogleMap widget.
   LatLng? googleMapsCenter;
   final googleMapsController = Completer<GoogleMapController>();
+  // Stores action output result for [Backend Call - API (VehiculoCambiarEstadoxID)] action in IconButton widget.
+  ApiCallResponse? pu;
 
   @override
   void initState(BuildContext context) {}

@@ -306,7 +306,7 @@ class FFRoute {
                     width: 50.0,
                     height: 50.0,
                     child: SpinKitDualRing(
-                      color: FlutterFlowTheme.of(context).primaryBackground,
+                      color: FlutterFlowTheme.of(context).primaryContainer,
                       size: 50.0,
                     ),
                   ),
