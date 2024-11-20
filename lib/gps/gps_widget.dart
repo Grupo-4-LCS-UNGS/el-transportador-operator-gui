@@ -1,3 +1,4 @@
+import '/auth/custom_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_google_map.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -35,6 +36,16 @@ class _GpsWidgetState extends State<GpsWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       currentUserLocationValue =
           await getCurrentUserLocation(defaultLocation: const LatLng(0.0, 0.0));
+      _model.apiAsignacionInformadaResult =
+          await TransportadorApiGroup.informarAsignacionCall.call(
+        idUsuario: currentUserData?.id,
+        idVehiculo: FFAppState().vehiculoActualmenteConduciendoAppState,
+      );
+
+      FFAppState().asignacionID =
+          TransportadorApiGroup.informarAsignacionCall.id(
+        (_model.apiAsignacionInformadaResult?.jsonBody ?? ''),
+      )!;
       _model.instantTimer = InstantTimer.periodic(
         duration: const Duration(milliseconds: 5000),
         callback: (timer) async {
@@ -121,9 +132,16 @@ class _GpsWidgetState extends State<GpsWidget> {
                 estado: 'Disponible',
               );
 
+              await TransportadorApiGroup.informarDesasignacionCall.call(
+                idAsignacion: FFAppState().asignacionID,
+              );
+
               FFAppState().estaManejandoAppState = false;
               FFAppState().deleteVehiculoActualmenteConduciendoAppState();
               FFAppState().vehiculoActualmenteConduciendoAppState = 0;
+
+              FFAppState().deleteAsignacionID();
+              FFAppState().asignacionID = 0;
 
               FFAppState().update(() {});
               _model.instantTimer?.cancel();

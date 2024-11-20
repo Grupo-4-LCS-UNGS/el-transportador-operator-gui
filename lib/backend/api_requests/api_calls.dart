@@ -184,6 +184,10 @@ class TransportadorApiGroup {
   static VehiculoxIDCall vehiculoxIDCall = VehiculoxIDCall();
   static VehiculoCambiarEstadoxIDCall vehiculoCambiarEstadoxIDCall =
       VehiculoCambiarEstadoxIDCall();
+  static InformarAsignacionCall informarAsignacionCall =
+      InformarAsignacionCall();
+  static InformarDesasignacionCall informarDesasignacionCall =
+      InformarDesasignacionCall();
 }
 
 class DatosDelUsuarioCall {
@@ -313,6 +317,68 @@ class VehiculoCambiarEstadoxIDCall {
         response,
         r'''$.modelo''',
       ));
+}
+
+class InformarAsignacionCall {
+  Future<ApiCallResponse> call({
+    int? idUsuario,
+    int? idVehiculo,
+    String? token = '',
+  }) async {
+    final baseUrl = TransportadorApiGroup.getBaseUrl(
+      token: token,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'informarAsignacion',
+      apiUrl: '$baseUrl/asignacion/$idUsuario/vehiculos/$idVehiculo/',
+      callType: ApiCallType.PUT,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      params: {},
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  int? id(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.id''',
+      ));
+}
+
+class InformarDesasignacionCall {
+  Future<ApiCallResponse> call({
+    int? idAsignacion,
+    String? token = '',
+  }) async {
+    final baseUrl = TransportadorApiGroup.getBaseUrl(
+      token: token,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'informarDesasignacion',
+      apiUrl: '$baseUrl/desasignacion/$idAsignacion',
+      callType: ApiCallType.PUT,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      params: {},
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
 }
 
 /// End Transportador Api Group Code

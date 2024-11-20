@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 class GpsModel extends FlutterFlowModel<GpsWidget> {
   ///  State fields for stateful widgets in this page.
 
+  // Stores action output result for [Backend Call - API (informarAsignacion)] action in gps widget.
+  ApiCallResponse? apiAsignacionInformadaResult;
   InstantTimer? instantTimer;
   // Stores action output result for [Backend Call - API (TraccarProtocolApi)] action in gps widget.
   ApiCallResponse? apiResult8sb;

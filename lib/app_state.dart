@@ -41,6 +41,10 @@ class FFAppState extends ChangeNotifier {
                   (await secureStorage.getInt('ff_ultimaActividadApp'))!)
               : _ultimaActividadApp;
     });
+    await _safeInitAsync(() async {
+      _asignacionID =
+          await secureStorage.getInt('ff_asignacionID') ?? _asignacionID;
+    });
   }
 
   void update(VoidCallback callback) {
@@ -104,6 +108,17 @@ class FFAppState extends ChangeNotifier {
 
   void deleteUltimaActividadApp() {
     secureStorage.delete(key: 'ff_ultimaActividadApp');
+  }
+
+  int _asignacionID = 0;
+  int get asignacionID => _asignacionID;
+  set asignacionID(int value) {
+    _asignacionID = value;
+    secureStorage.setInt('ff_asignacionID', value);
+  }
+
+  void deleteAsignacionID() {
+    secureStorage.delete(key: 'ff_asignacionID');
   }
 }
 
