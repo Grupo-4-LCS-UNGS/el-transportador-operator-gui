@@ -113,6 +113,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'mi_perfil',
               path: 'miPerfil',
               builder: (context, params) => const MiPerfilWidget(),
+            ),
+            FFRoute(
+              name: 'gpsCopy',
+              path: 'gpsCopy',
+              builder: (context, params) => const GpsCopyWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ),

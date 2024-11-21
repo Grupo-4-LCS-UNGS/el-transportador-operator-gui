@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '/backend/schema/util/firestore_util.dart';
 
+import 'index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
 class TraccarPositionStruct extends FFFirebaseStruct {
@@ -14,6 +15,8 @@ class TraccarPositionStruct extends FFFirebaseStruct {
     int? altitude,
     int? speed,
     int? course,
+    AttributesTraccarPositionStruct? attributes,
+    bool? valid,
     FirestoreUtilData firestoreUtilData = const FirestoreUtilData(),
   })  : _deviceId = deviceId,
         _latitude = latitude,
@@ -21,6 +24,8 @@ class TraccarPositionStruct extends FFFirebaseStruct {
         _altitude = altitude,
         _speed = speed,
         _course = course,
+        _attributes = attributes,
+        _valid = valid,
         super(firestoreUtilData);
 
   // "deviceId" field.
@@ -77,6 +82,25 @@ class TraccarPositionStruct extends FFFirebaseStruct {
 
   bool hasCourse() => _course != null;
 
+  // "attributes" field.
+  AttributesTraccarPositionStruct? _attributes;
+  AttributesTraccarPositionStruct get attributes =>
+      _attributes ?? AttributesTraccarPositionStruct();
+  set attributes(AttributesTraccarPositionStruct? val) => _attributes = val;
+
+  void updateAttributes(Function(AttributesTraccarPositionStruct) updateFn) {
+    updateFn(_attributes ??= AttributesTraccarPositionStruct());
+  }
+
+  bool hasAttributes() => _attributes != null;
+
+  // "valid" field.
+  bool? _valid;
+  bool get valid => _valid ?? false;
+  set valid(bool? val) => _valid = val;
+
+  bool hasValid() => _valid != null;
+
   static TraccarPositionStruct fromMap(Map<String, dynamic> data) =>
       TraccarPositionStruct(
         deviceId: castToType<int>(data['deviceId']),
@@ -85,6 +109,9 @@ class TraccarPositionStruct extends FFFirebaseStruct {
         altitude: castToType<int>(data['altitude']),
         speed: castToType<int>(data['speed']),
         course: castToType<int>(data['course']),
+        attributes:
+            AttributesTraccarPositionStruct.maybeFromMap(data['attributes']),
+        valid: data['valid'] as bool?,
       );
 
   static TraccarPositionStruct? maybeFromMap(dynamic data) => data is Map
@@ -98,6 +125,8 @@ class TraccarPositionStruct extends FFFirebaseStruct {
         'altitude': _altitude,
         'speed': _speed,
         'course': _course,
+        'attributes': _attributes?.toMap(),
+        'valid': _valid,
       }.withoutNulls;
 
   @override
@@ -125,6 +154,14 @@ class TraccarPositionStruct extends FFFirebaseStruct {
         'course': serializeParam(
           _course,
           ParamType.int,
+        ),
+        'attributes': serializeParam(
+          _attributes,
+          ParamType.DataStruct,
+        ),
+        'valid': serializeParam(
+          _valid,
+          ParamType.bool,
         ),
       }.withoutNulls;
 
@@ -160,6 +197,17 @@ class TraccarPositionStruct extends FFFirebaseStruct {
           ParamType.int,
           false,
         ),
+        attributes: deserializeStructParam(
+          data['attributes'],
+          ParamType.DataStruct,
+          false,
+          structBuilder: AttributesTraccarPositionStruct.fromSerializableMap,
+        ),
+        valid: deserializeParam(
+          data['valid'],
+          ParamType.bool,
+          false,
+        ),
       );
 
   @override
@@ -173,12 +221,22 @@ class TraccarPositionStruct extends FFFirebaseStruct {
         longitude == other.longitude &&
         altitude == other.altitude &&
         speed == other.speed &&
-        course == other.course;
+        course == other.course &&
+        attributes == other.attributes &&
+        valid == other.valid;
   }
 
   @override
-  int get hashCode => const ListEquality()
-      .hash([deviceId, latitude, longitude, altitude, speed, course]);
+  int get hashCode => const ListEquality().hash([
+        deviceId,
+        latitude,
+        longitude,
+        altitude,
+        speed,
+        course,
+        attributes,
+        valid
+      ]);
 }
 
 TraccarPositionStruct createTraccarPositionStruct({
@@ -188,6 +246,8 @@ TraccarPositionStruct createTraccarPositionStruct({
   int? altitude,
   int? speed,
   int? course,
+  AttributesTraccarPositionStruct? attributes,
+  bool? valid,
   Map<String, dynamic> fieldValues = const {},
   bool clearUnsetFields = true,
   bool create = false,
@@ -200,6 +260,9 @@ TraccarPositionStruct createTraccarPositionStruct({
       altitude: altitude,
       speed: speed,
       course: course,
+      attributes: attributes ??
+          (clearUnsetFields ? AttributesTraccarPositionStruct() : null),
+      valid: valid,
       firestoreUtilData: FirestoreUtilData(
         clearUnsetFields: clearUnsetFields,
         create: create,
@@ -256,6 +319,14 @@ Map<String, dynamic> getTraccarPositionFirestoreData(
     return {};
   }
   final firestoreData = mapToFirestore(traccarPosition.toMap());
+
+  // Handle nested data for "attributes" field.
+  addAttributesTraccarPositionStructData(
+    firestoreData,
+    traccarPosition.hasAttributes() ? traccarPosition.attributes : null,
+    'attributes',
+    forFieldValue,
+  );
 
   // Add any Firestore field values
   traccarPosition.firestoreUtilData.fieldValues

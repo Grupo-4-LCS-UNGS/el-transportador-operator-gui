@@ -120,6 +120,42 @@ class FFAppState extends ChangeNotifier {
   void deleteAsignacionID() {
     secureStorage.delete(key: 'ff_asignacionID');
   }
+
+  List<PlaceRowStruct> _ultimoPlaceInformado = [
+    PlaceRowStruct.fromSerializableMap(jsonDecode(
+        '{\"latitude\":\"-58.74902835608765\",\"longitude\":\"-34.457410959777576\",\"title\":\"Sucursal 1\",\"description\":\"Calle Falsa 123\",\"image_url\":\"\"}')),
+    PlaceRowStruct.fromSerializableMap(jsonDecode(
+        '{\"latitude\":\"-58.72834692039146\",\"longitude\":\"-34.56088169104979\",\"title\":\"Sucursal 2\",\"description\":\"Av siempre viva 123\",\"image_url\":\"\"}')),
+    PlaceRowStruct.fromSerializableMap(jsonDecode(
+        '{\"latitude\":\"-58.546645735342395\",\"longitude\":\"-34.56696420288483\",\"title\":\"Lugar 3\",\"description\":\"Hello World\",\"image_url\":\"Hello World\"}'))
+  ];
+  List<PlaceRowStruct> get ultimoPlaceInformado => _ultimoPlaceInformado;
+  set ultimoPlaceInformado(List<PlaceRowStruct> value) {
+    _ultimoPlaceInformado = value;
+  }
+
+  void addToUltimoPlaceInformado(PlaceRowStruct value) {
+    ultimoPlaceInformado.add(value);
+  }
+
+  void removeFromUltimoPlaceInformado(PlaceRowStruct value) {
+    ultimoPlaceInformado.remove(value);
+  }
+
+  void removeAtIndexFromUltimoPlaceInformado(int index) {
+    ultimoPlaceInformado.removeAt(index);
+  }
+
+  void updateUltimoPlaceInformadoAtIndex(
+    int index,
+    PlaceRowStruct Function(PlaceRowStruct) updateFn,
+  ) {
+    ultimoPlaceInformado[index] = updateFn(_ultimoPlaceInformado[index]);
+  }
+
+  void insertAtIndexInUltimoPlaceInformado(int index, PlaceRowStruct value) {
+    ultimoPlaceInformado.insert(index, value);
+  }
 }
 
 void _safeInit(Function() initializeField) {

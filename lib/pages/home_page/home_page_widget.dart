@@ -530,7 +530,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                 .text);
 
                                                         context.goNamed(
-                                                          'gps',
+                                                          'gpsCopy',
                                                           extra: <String,
                                                               dynamic>{
                                                             kTransitionInfoKey:

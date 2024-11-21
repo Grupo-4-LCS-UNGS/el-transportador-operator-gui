@@ -49,7 +49,9 @@ class ServerCall {
 }
 
 class DispositivosCall {
-  Future<ApiCallResponse> call() async {
+  Future<ApiCallResponse> call({
+    int? uniqueId,
+  }) async {
     final baseUrl = TraccarGroup.getBaseUrl();
 
     return ApiManager.instance.makeApiCall(
@@ -60,7 +62,9 @@ class DispositivosCall {
         'Authorization': 'Basic aXR1bGFAbG9nb3MubmV0LmFyOkluVGVyMjJTb2w=',
         'Content-Type': 'application/json',
       },
-      params: {},
+      params: {
+        'uniqueId': uniqueId,
+      },
       returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
@@ -69,37 +73,43 @@ class DispositivosCall {
       alwaysAllowBody: false,
     );
   }
+
+  List<int>? id(dynamic response) => (getJsonField(
+        response,
+        r'''$[:].id''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<int>(x))
+          .withoutNulls
+          .toList();
+  List<int>? positionID(dynamic response) => (getJsonField(
+        response,
+        r'''$[:].positionId''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<int>(x))
+          .withoutNulls
+          .toList();
 }
 
 class PosicionesGetCall {
   Future<ApiCallResponse> call({
-    int? deviceId,
-    double? latitude,
-    double? longitude,
-    int? altitude,
-    int? speed,
-    int? course,
-    int? accuracy,
+    int? id,
   }) async {
     final baseUrl = TraccarGroup.getBaseUrl();
 
     return ApiManager.instance.makeApiCall(
       callName: 'PosicionesGet',
       apiUrl: '${baseUrl}positions',
-      callType: ApiCallType.POST,
+      callType: ApiCallType.GET,
       headers: {
         'Authorization': 'Basic aXR1bGFAbG9nb3MubmV0LmFyOkluVGVyMjJTb2w=',
       },
       params: {
-        'deviceId': deviceId,
-        'latitude': latitude,
-        'longitude': longitude,
-        'altitude': altitude,
-        'speed': speed,
-        'course': course,
-        'accuracy': accuracy,
+        'id': id,
       },
-      bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
       returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
@@ -389,6 +399,7 @@ class TraccarProtocolApiCall {
     int? valid = 1,
     double? lat,
     double? lon,
+    String? timestamp = '',
   }) async {
     return ApiManager.instance.makeApiCall(
       callName: 'TraccarProtocolApi',
@@ -400,6 +411,8 @@ class TraccarProtocolApiCall {
         'valid': valid,
         'lat': lat,
         'lon': lon,
+        'timestamp': timestamp,
+        'speed': 1,
       },
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
       returnBody: true,

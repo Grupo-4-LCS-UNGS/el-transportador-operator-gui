@@ -1,28 +1,28 @@
 import '/auth/custom_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
+import '/flutter_flow/flutter_flow_google_map.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/instant_timer.dart';
-import '/custom_code/widgets/index.dart' as custom_widgets;
+import 'dart:async';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'gps_model.dart';
-export 'gps_model.dart';
+import 'gps_copy_model.dart';
+export 'gps_copy_model.dart';
 
-class GpsWidget extends StatefulWidget {
-  const GpsWidget({super.key});
+class GpsCopyWidget extends StatefulWidget {
+  const GpsCopyWidget({super.key});
 
   @override
-  State<GpsWidget> createState() => _GpsWidgetState();
+  State<GpsCopyWidget> createState() => _GpsCopyWidgetState();
 }
 
-class _GpsWidgetState extends State<GpsWidget> {
-  late GpsModel _model;
+class _GpsCopyWidgetState extends State<GpsCopyWidget> {
+  late GpsCopyModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   LatLng? currentUserLocationValue;
@@ -30,7 +30,7 @@ class _GpsWidgetState extends State<GpsWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => GpsModel());
+    _model = createModel(context, () => GpsCopyModel());
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
@@ -53,7 +53,17 @@ class _GpsWidgetState extends State<GpsWidget> {
               await getCurrentUserLocation(defaultLocation: const LatLng(0.0, 0.0));
           FFAppState().ultimaPosicionInformadaAppState =
               currentUserLocationValue;
-          safeSetState(() {});
+          unawaited(
+            () async {
+              await _model.googleMapsController.future.then(
+                (c) => c.animateCamera(
+                  CameraUpdate.newLatLng(FFAppState()
+                      .ultimaPosicionInformadaAppState!
+                      .toGoogleMaps()),
+                ),
+              );
+            }(),
+          );
           _model.apiResult8sb = await TraccarProtocolApiCall.call(
             deviceid: FFAppState().vehiculoActualmenteConduciendoAppState,
             lat: functions
@@ -84,8 +94,6 @@ class _GpsWidgetState extends State<GpsWidget> {
       );
     });
 
-    getCurrentUserLocation(defaultLocation: const LatLng(0.0, 0.0), cached: true)
-        .then((loc) => safeSetState(() => currentUserLocationValue = loc));
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
@@ -99,26 +107,12 @@ class _GpsWidgetState extends State<GpsWidget> {
   @override
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
-    if (currentUserLocationValue == null) {
-      return Container(
-        color: FlutterFlowTheme.of(context).primaryBackground,
-        child: Center(
-          child: SizedBox(
-            width: 50.0,
-            height: 50.0,
-            child: SpinKitDualRing(
-              color: FlutterFlowTheme.of(context).primaryContainer,
-              size: 50.0,
-            ),
-          ),
-        ),
-      );
-    }
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
+        resizeToAvoidBottomInset: false,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -180,27 +174,36 @@ class _GpsWidgetState extends State<GpsWidget> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Expanded(
-                child: SizedBox(
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: custom_widgets.CustomG4Mapita(
-                    width: double.infinity,
-                    height: double.infinity,
-                    centerLatitude:
-                        functions.latAsDouble(currentUserLocationValue),
-                    centerLongitude:
-                        functions.longAsDouble(currentUserLocationValue),
+                child: Builder(builder: (context) {
+                  final googleMapMarker =
+                      FFAppState().ultimaPosicionInformadaAppState;
+                  return FlutterFlowGoogleMap(
+                    controller: _model.googleMapsController,
+                    onCameraIdle: (latLng) =>
+                        safeSetState(() => _model.googleMapsCenter = latLng),
+                    initialLocation: _model.googleMapsCenter ??=
+                        const LatLng(13.106061, -59.613158),
+                    markers: [
+                      if (googleMapMarker != null)
+                        FlutterFlowMarker(
+                          googleMapMarker.serialize(),
+                          googleMapMarker,
+                        ),
+                    ],
+                    markerColor: GoogleMarkerColor.red,
+                    mapType: MapType.normal,
+                    style: GoogleMapStyle.standard,
+                    initialZoom: 14.0,
+                    allowInteraction: true,
+                    allowZoom: true,
+                    showZoomControls: true,
                     showLocation: true,
                     showCompass: true,
                     showMapToolbar: true,
                     showTraffic: true,
-                    allowZoom: true,
-                    showZoomControls: true,
-                    defaultZoom: 14.0,
-                    places: FFAppState().ultimoPlaceInformado,
-                    onClickMarker: (placeRow) async {},
-                  ),
-                ),
+                    centerMapOnMarkerTap: true,
+                  );
+                }),
               ),
             ],
           ),
