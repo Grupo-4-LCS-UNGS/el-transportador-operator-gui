@@ -118,6 +118,25 @@ class PosicionesGetCall {
       alwaysAllowBody: false,
     );
   }
+
+  List<int>? id(dynamic response) => (getJsonField(
+        response,
+        r'''$[:].id''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<int>(x))
+          .withoutNulls
+          .toList();
+  List<double>? distancia(dynamic response) => (getJsonField(
+        response,
+        r'''$[:].attributes.totalDistance''',
+        true,
+      ) as List?)
+          ?.withoutNulls
+          .map((x) => castToType<double>(x))
+          .withoutNulls
+          .toList();
 }
 
 /// End Traccar Group Code
@@ -333,6 +352,7 @@ class InformarAsignacionCall {
   Future<ApiCallResponse> call({
     int? idUsuario,
     int? idVehiculo,
+    double? distanciaInicial,
     String? token = '',
   }) async {
     final baseUrl = TransportadorApiGroup.getBaseUrl(
@@ -341,7 +361,8 @@ class InformarAsignacionCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'informarAsignacion',
-      apiUrl: '$baseUrl/asignacion/$idUsuario/vehiculos/$idVehiculo/',
+      apiUrl:
+          '$baseUrl/asignacion/$idUsuario/vehiculos/$idVehiculo/km/$distanciaInicial',
       callType: ApiCallType.PUT,
       headers: {
         'Authorization': 'Bearer $token',
@@ -366,6 +387,7 @@ class InformarAsignacionCall {
 class InformarDesasignacionCall {
   Future<ApiCallResponse> call({
     int? idAsignacion,
+    double? distanciaFinal,
     String? token = '',
   }) async {
     final baseUrl = TransportadorApiGroup.getBaseUrl(
@@ -374,7 +396,7 @@ class InformarDesasignacionCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'informarDesasignacion',
-      apiUrl: '$baseUrl/desasignacion/$idAsignacion',
+      apiUrl: '$baseUrl/desasignacion/$idAsignacion/km/$distanciaFinal',
       callType: ApiCallType.PUT,
       headers: {
         'Authorization': 'Bearer $token',

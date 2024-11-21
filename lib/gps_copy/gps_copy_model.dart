@@ -8,6 +8,10 @@ import 'package:flutter/material.dart';
 class GpsCopyModel extends FlutterFlowModel<GpsCopyWidget> {
   ///  State fields for stateful widgets in this page.
 
+  // Stores action output result for [Backend Call - API (Dispositivos)] action in gpsCopy widget.
+  ApiCallResponse? traccarPaso1Result;
+  // Stores action output result for [Backend Call - API (PosicionesGet)] action in gpsCopy widget.
+  ApiCallResponse? traccarPaso2ApiResult;
   // Stores action output result for [Backend Call - API (informarAsignacion)] action in gpsCopy widget.
   ApiCallResponse? apiAsignacionInformadaResult;
   InstantTimer? instantTimer;
@@ -18,6 +22,10 @@ class GpsCopyModel extends FlutterFlowModel<GpsCopyWidget> {
   final googleMapsController = Completer<GoogleMapController>();
   // Stores action output result for [Backend Call - API (VehiculoCambiarEstadoxID)] action in IconButton widget.
   ApiCallResponse? pu;
+  // Stores action output result for [Backend Call - API (Dispositivos)] action in IconButton widget.
+  ApiCallResponse? traccarPaso1ResultFinalizar;
+  // Stores action output result for [Backend Call - API (PosicionesGet)] action in IconButton widget.
+  ApiCallResponse? traccarPaso2ApiFinalizar;
 
   @override
   void initState(BuildContext context) {}

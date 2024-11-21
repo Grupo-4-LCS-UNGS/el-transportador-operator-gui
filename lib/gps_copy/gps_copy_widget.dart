@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/instant_timer.dart';
 import 'dart:async';
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -36,10 +37,30 @@ class _GpsCopyWidgetState extends State<GpsCopyWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       currentUserLocationValue =
           await getCurrentUserLocation(defaultLocation: const LatLng(0.0, 0.0));
+      _model.traccarPaso1Result = await TraccarGroup.dispositivosCall.call(
+        uniqueId: FFAppState().vehiculoActualmenteConduciendoAppState,
+      );
+
+      _model.traccarPaso2ApiResult = await TraccarGroup.posicionesGetCall.call(
+        id: TraccarGroup.dispositivosCall
+            .positionID(
+              (_model.traccarPaso1Result?.jsonBody ?? ''),
+            )
+            ?.first,
+      );
+
       _model.apiAsignacionInformadaResult =
           await TransportadorApiGroup.informarAsignacionCall.call(
         idUsuario: currentUserData?.id,
         idVehiculo: FFAppState().vehiculoActualmenteConduciendoAppState,
+        distanciaInicial: ((_model.traccarPaso2ApiResult?.jsonBody ?? '')
+                .toList()
+                .map<TraccarPositionStruct?>(TraccarPositionStruct.maybeFromMap)
+                .toList() as Iterable<TraccarPositionStruct?>)
+            .withoutNulls
+            .first
+            .attributes
+            .totalDistance,
       );
 
       FFAppState().asignacionID =
@@ -134,8 +155,35 @@ class _GpsCopyWidgetState extends State<GpsCopyWidget> {
                 estado: 'Disponible',
               );
 
+              _model.traccarPaso1ResultFinalizar =
+                  await TraccarGroup.dispositivosCall.call(
+                uniqueId: FFAppState().vehiculoActualmenteConduciendoAppState,
+              );
+
+              _model.traccarPaso2ApiFinalizar =
+                  await TraccarGroup.posicionesGetCall.call(
+                id: ((_model.traccarPaso1ResultFinalizar?.jsonBody ?? '')
+                        .toList()
+                        .map<TraccarDeviceStruct?>(
+                            TraccarDeviceStruct.maybeFromMap)
+                        .toList() as Iterable<TraccarDeviceStruct?>)
+                    .withoutNulls
+                    .first
+                    .positionId,
+              );
+
               await TransportadorApiGroup.informarDesasignacionCall.call(
                 idAsignacion: FFAppState().asignacionID,
+                distanciaFinal:
+                    ((_model.traccarPaso2ApiFinalizar?.jsonBody ?? '')
+                            .toList()
+                            .map<TraccarPositionStruct?>(
+                                TraccarPositionStruct.maybeFromMap)
+                            .toList() as Iterable<TraccarPositionStruct?>)
+                        .withoutNulls
+                        .first
+                        .attributes
+                        .totalDistance,
               );
 
               FFAppState().estaManejandoAppState = false;
