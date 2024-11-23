@@ -66,8 +66,19 @@ bool? isActivelyUsingApp(DateTime? lastTimeUsed) {
   return differenceInMinutes <= 15;
 }
 
-DateTime? nowThisMoment() {
-  DateTime currentTime = DateTime.now();
+int? nowThisMoment() {
+  // return the unix timestamp of now
+  return DateTime.now().millisecondsSinceEpoch;
+}
 
-  return currentTime;
+int convertToInt(double? entrada) {
+  // Convert input to int, if none or is imposible to convert, return 0
+  try {
+    if (entrada != null) {
+      return entrada.toInt();
+    }
+  } catch (e) {
+    // Do nothing, return 0 at the end
+  }
+  return 0;
 }

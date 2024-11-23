@@ -22,8 +22,6 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
       textFieldIdVehiculoTextControllerValidator;
   // Stores action output result for [Backend Call - API (VehiculoxID)] action in ButtonConducir widget.
   ApiCallResponse? apiVehiculoEscaneadoResult;
-  // Stores action output result for [Backend Call - API (VehiculoCambiarEstadoxID)] action in ButtonConducir widget.
-  ApiCallResponse? apiEstadoCambiadoResult;
 
   @override
   void initState(BuildContext context) {}

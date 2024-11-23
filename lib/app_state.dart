@@ -156,6 +156,24 @@ class FFAppState extends ChangeNotifier {
   void insertAtIndexInUltimoPlaceInformado(int index, PlaceRowStruct value) {
     ultimoPlaceInformado.insert(index, value);
   }
+
+  double _distanciaInicial = 0.0;
+  double get distanciaInicial => _distanciaInicial;
+  set distanciaInicial(double value) {
+    _distanciaInicial = value;
+  }
+
+  int _ultimaPosicionId = 0;
+  int get ultimaPosicionId => _ultimaPosicionId;
+  set ultimaPosicionId(int value) {
+    _ultimaPosicionId = value;
+  }
+
+  double _distanciaFinal = 0.0;
+  double get distanciaFinal => _distanciaFinal;
+  set distanciaFinal(double value) {
+    _distanciaFinal = value;
+  }
 }
 
 void _safeInit(Function() initializeField) {

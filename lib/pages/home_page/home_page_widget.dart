@@ -504,49 +504,39 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                               ''),
                                                         ) ==
                                                         'Disponible') {
-                                                      _model.apiEstadoCambiadoResult =
-                                                          await TransportadorApiGroup
-                                                              .vehiculoCambiarEstadoxIDCall
-                                                              .call(
-                                                        id: int.tryParse(_model
-                                                            .textFieldIdVehiculoTextController
-                                                            .text),
-                                                        estado: 'En Transito',
+                                                      HapticFeedback
+                                                          .selectionClick();
+                                                      FFAppState()
+                                                              .estaManejandoAppState =
+                                                          true;
+                                                      FFAppState()
+                                                              .vehiculoActualmenteConduciendoAppState =
+                                                          int.parse(_model
+                                                              .textFieldIdVehiculoTextController
+                                                              .text);
+                                                      FFAppState()
+                                                          .update(() {});
+                                                      await Future.delayed(
+                                                          const Duration(
+                                                              milliseconds:
+                                                                  2000));
+
+                                                      context.goNamed(
+                                                        'gpsCopy',
+                                                        extra: <String,
+                                                            dynamic>{
+                                                          kTransitionInfoKey:
+                                                              const TransitionInfo(
+                                                            hasTransition: true,
+                                                            transitionType:
+                                                                PageTransitionType
+                                                                    .fade,
+                                                            duration: Duration(
+                                                                milliseconds:
+                                                                    800),
+                                                          ),
+                                                        },
                                                       );
-
-                                                      if ((_model
-                                                              .apiEstadoCambiadoResult
-                                                              ?.succeeded ??
-                                                          true)) {
-                                                        HapticFeedback
-                                                            .selectionClick();
-                                                        FFAppState()
-                                                                .estaManejandoAppState =
-                                                            true;
-                                                        FFAppState()
-                                                                .vehiculoActualmenteConduciendoAppState =
-                                                            int.parse(_model
-                                                                .textFieldIdVehiculoTextController
-                                                                .text);
-
-                                                        context.goNamed(
-                                                          'gpsCopy',
-                                                          extra: <String,
-                                                              dynamic>{
-                                                            kTransitionInfoKey:
-                                                                const TransitionInfo(
-                                                              hasTransition:
-                                                                  true,
-                                                              transitionType:
-                                                                  PageTransitionType
-                                                                      .fade,
-                                                              duration: Duration(
-                                                                  milliseconds:
-                                                                      800),
-                                                            ),
-                                                          },
-                                                        );
-                                                      }
                                                     } else {
                                                       HapticFeedback.vibrate();
                                                       await showDialog(

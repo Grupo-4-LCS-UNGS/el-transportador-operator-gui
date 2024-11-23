@@ -8,7 +8,7 @@ import 'api_manager.dart';
 
 export 'api_manager.dart' show ApiCallResponse;
 
-const _kPrivateApiFunctionName = 'ffPrivateApiCall';
+const _kPrivateApiFunctionName = 'operadorTraccarApi';
 
 /// Start Traccar Group Code
 
@@ -215,8 +215,8 @@ class TransportadorApiGroup {
       VehiculoCambiarEstadoxIDCall();
   static InformarAsignacionCall informarAsignacionCall =
       InformarAsignacionCall();
-  static InformarDesasignacionCall informarDesasignacionCall =
-      InformarDesasignacionCall();
+  static InformarFinAsignacionCall informarFinAsignacionCall =
+      InformarFinAsignacionCall();
 }
 
 class DatosDelUsuarioCall {
@@ -350,9 +350,8 @@ class VehiculoCambiarEstadoxIDCall {
 
 class InformarAsignacionCall {
   Future<ApiCallResponse> call({
-    int? idUsuario,
     int? idVehiculo,
-    double? distanciaInicial,
+    int? idUsuario,
     String? token = '',
   }) async {
     final baseUrl = TransportadorApiGroup.getBaseUrl(
@@ -361,14 +360,16 @@ class InformarAsignacionCall {
 
     return ApiManager.instance.makeApiCall(
       callName: 'informarAsignacion',
-      apiUrl:
-          '$baseUrl/asignacion/$idUsuario/vehiculos/$idVehiculo/km/$distanciaInicial',
-      callType: ApiCallType.PUT,
+      apiUrl: '$baseUrl/asignacion',
+      callType: ApiCallType.POST,
       headers: {
         'Authorization': 'Bearer $token',
       },
-      params: {},
-      bodyType: BodyType.JSON,
+      params: {
+        'id_vehiculo': idVehiculo,
+        'id_usuario': idUsuario,
+      },
+      bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
       returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
@@ -378,16 +379,16 @@ class InformarAsignacionCall {
     );
   }
 
-  int? id(dynamic response) => castToType<int>(getJsonField(
+  int? idAsignacion(dynamic response) => castToType<int>(getJsonField(
         response,
         r'''$.id''',
       ));
 }
 
-class InformarDesasignacionCall {
+class InformarFinAsignacionCall {
   Future<ApiCallResponse> call({
     int? idAsignacion,
-    double? distanciaFinal,
+    int? distanciaFinal,
     String? token = '',
   }) async {
     final baseUrl = TransportadorApiGroup.getBaseUrl(
@@ -395,14 +396,16 @@ class InformarDesasignacionCall {
     );
 
     return ApiManager.instance.makeApiCall(
-      callName: 'informarDesasignacion',
-      apiUrl: '$baseUrl/desasignacion/$idAsignacion/km/$distanciaFinal',
-      callType: ApiCallType.PUT,
+      callName: 'informarFinAsignacion',
+      apiUrl: '$baseUrl/desasignacion',
+      callType: ApiCallType.POST,
       headers: {
         'Authorization': 'Bearer $token',
       },
-      params: {},
-      bodyType: BodyType.JSON,
+      params: {
+        'id_asignacion': idAsignacion,
+      },
+      bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
       returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
@@ -421,7 +424,6 @@ class TraccarProtocolApiCall {
     int? valid = 1,
     double? lat,
     double? lon,
-    String? timestamp = '',
   }) async {
     return ApiManager.instance.makeApiCall(
       callName: 'TraccarProtocolApi',
@@ -433,7 +435,6 @@ class TraccarProtocolApiCall {
         'valid': valid,
         'lat': lat,
         'lon': lon,
-        'timestamp': timestamp,
         'speed': 1,
       },
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,

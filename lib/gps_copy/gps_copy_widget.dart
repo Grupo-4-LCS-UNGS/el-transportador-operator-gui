@@ -5,8 +5,6 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/instant_timer.dart';
-import 'dart:async';
-import '/backend/schema/structs/index.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -37,36 +35,18 @@ class _GpsCopyWidgetState extends State<GpsCopyWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       currentUserLocationValue =
           await getCurrentUserLocation(defaultLocation: const LatLng(0.0, 0.0));
-      _model.traccarPaso1Result = await TraccarGroup.dispositivosCall.call(
-        uniqueId: FFAppState().vehiculoActualmenteConduciendoAppState,
-      );
-
-      _model.traccarPaso2ApiResult = await TraccarGroup.posicionesGetCall.call(
-        id: TraccarGroup.dispositivosCall
-            .positionID(
-              (_model.traccarPaso1Result?.jsonBody ?? ''),
-            )
-            ?.first,
-      );
-
-      _model.apiAsignacionInformadaResult =
+      _model.informarAsignacionApiResult =
           await TransportadorApiGroup.informarAsignacionCall.call(
-        idUsuario: currentUserData?.id,
         idVehiculo: FFAppState().vehiculoActualmenteConduciendoAppState,
-        distanciaInicial: ((_model.traccarPaso2ApiResult?.jsonBody ?? '')
-                .toList()
-                .map<TraccarPositionStruct?>(TraccarPositionStruct.maybeFromMap)
-                .toList() as Iterable<TraccarPositionStruct?>)
-            .withoutNulls
-            .first
-            .attributes
-            .totalDistance,
+        idUsuario: currentUserData?.id,
       );
 
-      FFAppState().asignacionID =
-          TransportadorApiGroup.informarAsignacionCall.id(
-        (_model.apiAsignacionInformadaResult?.jsonBody ?? ''),
-      )!;
+      if ((_model.informarAsignacionApiResult?.succeeded ?? true)) {
+        FFAppState().asignacionID =
+            TransportadorApiGroup.informarAsignacionCall.idAsignacion(
+          (_model.informarAsignacionApiResult?.jsonBody ?? ''),
+        )!;
+      }
       _model.instantTimer = InstantTimer.periodic(
         duration: const Duration(milliseconds: 5000),
         callback: (timer) async {
@@ -74,39 +54,29 @@ class _GpsCopyWidgetState extends State<GpsCopyWidget> {
               await getCurrentUserLocation(defaultLocation: const LatLng(0.0, 0.0));
           FFAppState().ultimaPosicionInformadaAppState =
               currentUserLocationValue;
-          unawaited(
-            () async {
-              await _model.googleMapsController.future.then(
-                (c) => c.animateCamera(
-                  CameraUpdate.newLatLng(FFAppState()
-                      .ultimaPosicionInformadaAppState!
-                      .toGoogleMaps()),
-                ),
-              );
-            }(),
-          );
-          _model.apiResult8sb = await TraccarProtocolApiCall.call(
+          safeSetState(() {});
+          _model.apiTraccarProtocolResult = await TraccarProtocolApiCall.call(
             deviceid: FFAppState().vehiculoActualmenteConduciendoAppState,
+            valid: 1,
             lat: functions
                 .latAsDouble(FFAppState().ultimaPosicionInformadaAppState),
             lon: functions
                 .longAsDouble(FFAppState().ultimaPosicionInformadaAppState),
-            valid: 1,
-            timestamp:
-                getCurrentTimestamp.millisecondsSinceEpoch.toString(),
           );
 
-          if (!(_model.apiResult8sb?.succeeded ?? true)) {
+          if (!(_model.apiTraccarProtocolResult?.succeeded ?? true)) {
+            ScaffoldMessenger.of(context).clearSnackBars();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  'No se está pudiendo informar posición GPS',
+                  'No estamos pudiendo informar tu posición',
                   style: TextStyle(
-                    color: FlutterFlowTheme.of(context).primaryText,
+                    color: FlutterFlowTheme.of(context).error,
                   ),
                 ),
-                duration: const Duration(milliseconds: 4000),
-                backgroundColor: FlutterFlowTheme.of(context).secondary,
+                duration: const Duration(milliseconds: 2000),
+                backgroundColor:
+                    FlutterFlowTheme.of(context).secondaryBackground,
               ),
             );
           }
@@ -131,116 +101,86 @@ class _GpsCopyWidgetState extends State<GpsCopyWidget> {
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        key: scaffoldKey,
-        resizeToAvoidBottomInset: false,
-        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        appBar: AppBar(
-          backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-          automaticallyImplyLeading: false,
-          leading: FlutterFlowIconButton(
-            borderColor: Colors.transparent,
-            borderRadius: 30.0,
-            borderWidth: 1.0,
-            buttonSize: 60.0,
-            icon: Icon(
-              Icons.arrow_back_rounded,
-              color: FlutterFlowTheme.of(context).primaryText,
-              size: 30.0,
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          key: scaffoldKey,
+          resizeToAvoidBottomInset: false,
+          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+          appBar: AppBar(
+            backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+            automaticallyImplyLeading: false,
+            leading: FlutterFlowIconButton(
+              borderColor: Colors.transparent,
+              borderRadius: 30.0,
+              borderWidth: 1.0,
+              buttonSize: 60.0,
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                color: FlutterFlowTheme.of(context).primaryText,
+                size: 30.0,
+              ),
+              onPressed: () async {
+                _model.apiFinalAsignacionResult =
+                    await TransportadorApiGroup.informarFinAsignacionCall.call(
+                  idAsignacion: FFAppState().asignacionID,
+                );
+
+                if ((_model.apiFinalAsignacionResult?.succeeded ?? true)) {
+                  if ((_model.apiFinalAsignacionResult?.succeeded ?? true)) {
+                    FFAppState().estaManejandoAppState = false;
+                    FFAppState().deleteVehiculoActualmenteConduciendoAppState();
+                    FFAppState().vehiculoActualmenteConduciendoAppState = 0;
+
+                    FFAppState().deleteAsignacionID();
+                    FFAppState().asignacionID = 0;
+                  }
+                }
+
+                context.goNamed(
+                  'HomePage',
+                  extra: <String, dynamic>{
+                    kTransitionInfoKey: const TransitionInfo(
+                      hasTransition: true,
+                      transitionType: PageTransitionType.rightToLeft,
+                      duration: Duration(milliseconds: 850),
+                    ),
+                  },
+                );
+
+                safeSetState(() {});
+              },
             ),
-            onPressed: () async {
-              _model.pu =
-                  await TransportadorApiGroup.vehiculoCambiarEstadoxIDCall.call(
-                id: FFAppState().vehiculoActualmenteConduciendoAppState,
-                estado: 'Disponible',
-              );
-
-              _model.traccarPaso1ResultFinalizar =
-                  await TraccarGroup.dispositivosCall.call(
-                uniqueId: FFAppState().vehiculoActualmenteConduciendoAppState,
-              );
-
-              _model.traccarPaso2ApiFinalizar =
-                  await TraccarGroup.posicionesGetCall.call(
-                id: ((_model.traccarPaso1ResultFinalizar?.jsonBody ?? '')
-                        .toList()
-                        .map<TraccarDeviceStruct?>(
-                            TraccarDeviceStruct.maybeFromMap)
-                        .toList() as Iterable<TraccarDeviceStruct?>)
-                    .withoutNulls
-                    .first
-                    .positionId,
-              );
-
-              await TransportadorApiGroup.informarDesasignacionCall.call(
-                idAsignacion: FFAppState().asignacionID,
-                distanciaFinal:
-                    ((_model.traccarPaso2ApiFinalizar?.jsonBody ?? '')
-                            .toList()
-                            .map<TraccarPositionStruct?>(
-                                TraccarPositionStruct.maybeFromMap)
-                            .toList() as Iterable<TraccarPositionStruct?>)
-                        .withoutNulls
-                        .first
-                        .attributes
-                        .totalDistance,
-              );
-
-              FFAppState().estaManejandoAppState = false;
-              FFAppState().deleteVehiculoActualmenteConduciendoAppState();
-              FFAppState().vehiculoActualmenteConduciendoAppState = 0;
-
-              FFAppState().deleteAsignacionID();
-              FFAppState().asignacionID = 0;
-
-              FFAppState().update(() {});
-              _model.instantTimer?.cancel();
-
-              context.pushNamed('HomePage');
-
-              safeSetState(() {});
-            },
+            title: Text(
+              'Conduciendo',
+              style: FlutterFlowTheme.of(context).headlineMedium.override(
+                    fontFamily:
+                        FlutterFlowTheme.of(context).headlineMediumFamily,
+                    color: FlutterFlowTheme.of(context).primaryText,
+                    fontSize: 22.0,
+                    letterSpacing: 0.0,
+                    useGoogleFonts: GoogleFonts.asMap().containsKey(
+                        FlutterFlowTheme.of(context).headlineMediumFamily),
+                  ),
+            ),
+            actions: const [],
+            centerTitle: true,
+            elevation: 2.0,
           ),
-          title: Text(
-            'Conduciendo',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-                  fontFamily: FlutterFlowTheme.of(context).headlineMediumFamily,
-                  color: FlutterFlowTheme.of(context).primaryText,
-                  fontSize: 22.0,
-                  letterSpacing: 0.0,
-                  useGoogleFonts: GoogleFonts.asMap().containsKey(
-                      FlutterFlowTheme.of(context).headlineMediumFamily),
-                ),
-          ),
-          actions: const [],
-          centerTitle: true,
-          elevation: 2.0,
-        ),
-        body: SafeArea(
-          top: true,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: Builder(builder: (context) {
-                  final googleMapMarker =
-                      FFAppState().ultimaPosicionInformadaAppState;
-                  return FlutterFlowGoogleMap(
+          body: SafeArea(
+            top: true,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(
+                  child: FlutterFlowGoogleMap(
                     controller: _model.googleMapsController,
-                    onCameraIdle: (latLng) =>
-                        safeSetState(() => _model.googleMapsCenter = latLng),
+                    onCameraIdle: (latLng) => _model.googleMapsCenter = latLng,
                     initialLocation: _model.googleMapsCenter ??=
-                        const LatLng(13.106061, -59.613158),
-                    markers: [
-                      if (googleMapMarker != null)
-                        FlutterFlowMarker(
-                          googleMapMarker.serialize(),
-                          googleMapMarker,
-                        ),
-                    ],
-                    markerColor: GoogleMarkerColor.red,
+                        const LatLng(-34.521902527624974, -58.70000868445082),
+                    markerColor: GoogleMarkerColor.violet,
                     mapType: MapType.normal,
-                    style: GoogleMapStyle.standard,
+                    style: GoogleMapStyle.night,
                     initialZoom: 14.0,
                     allowInteraction: true,
                     allowZoom: true,
@@ -250,10 +190,10 @@ class _GpsCopyWidgetState extends State<GpsCopyWidget> {
                     showMapToolbar: true,
                     showTraffic: true,
                     centerMapOnMarkerTap: true,
-                  );
-                }),
-              ),
-            ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

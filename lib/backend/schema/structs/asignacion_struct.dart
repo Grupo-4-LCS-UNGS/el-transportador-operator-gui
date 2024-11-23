@@ -14,12 +14,18 @@ class AsignacionStruct extends FFFirebaseStruct {
     UserDataStruct? usuario,
     DateTime? fechaHoraAsignacion,
     DateTime? fechaHoraDesasignacion,
+    double? distanciaRecorrida,
+    double? distanciaInicial,
+    double? distanciaFinal,
     FirestoreUtilData firestoreUtilData = const FirestoreUtilData(),
   })  : _id = id,
         _vehiculo = vehiculo,
         _usuario = usuario,
         _fechaHoraAsignacion = fechaHoraAsignacion,
         _fechaHoraDesasignacion = fechaHoraDesasignacion,
+        _distanciaRecorrida = distanciaRecorrida,
+        _distanciaInicial = distanciaInicial,
+        _distanciaFinal = distanciaFinal,
         super(firestoreUtilData);
 
   // "id" field.
@@ -67,6 +73,36 @@ class AsignacionStruct extends FFFirebaseStruct {
 
   bool hasFechaHoraDesasignacion() => _fechaHoraDesasignacion != null;
 
+  // "distancia_recorrida" field.
+  double? _distanciaRecorrida;
+  double get distanciaRecorrida => _distanciaRecorrida ?? 0.0;
+  set distanciaRecorrida(double? val) => _distanciaRecorrida = val;
+
+  void incrementDistanciaRecorrida(double amount) =>
+      distanciaRecorrida = distanciaRecorrida + amount;
+
+  bool hasDistanciaRecorrida() => _distanciaRecorrida != null;
+
+  // "distancia_inicial" field.
+  double? _distanciaInicial;
+  double get distanciaInicial => _distanciaInicial ?? 0.0;
+  set distanciaInicial(double? val) => _distanciaInicial = val;
+
+  void incrementDistanciaInicial(double amount) =>
+      distanciaInicial = distanciaInicial + amount;
+
+  bool hasDistanciaInicial() => _distanciaInicial != null;
+
+  // "distancia_final" field.
+  double? _distanciaFinal;
+  double get distanciaFinal => _distanciaFinal ?? 0.0;
+  set distanciaFinal(double? val) => _distanciaFinal = val;
+
+  void incrementDistanciaFinal(double amount) =>
+      distanciaFinal = distanciaFinal + amount;
+
+  bool hasDistanciaFinal() => _distanciaFinal != null;
+
   static AsignacionStruct fromMap(Map<String, dynamic> data) =>
       AsignacionStruct(
         id: castToType<int>(data['id']),
@@ -74,6 +110,9 @@ class AsignacionStruct extends FFFirebaseStruct {
         usuario: UserDataStruct.maybeFromMap(data['usuario']),
         fechaHoraAsignacion: data['fecha_hora_asignacion'] as DateTime?,
         fechaHoraDesasignacion: data['fecha_hora_desasignacion'] as DateTime?,
+        distanciaRecorrida: castToType<double>(data['distancia_recorrida']),
+        distanciaInicial: castToType<double>(data['distancia_inicial']),
+        distanciaFinal: castToType<double>(data['distancia_final']),
       );
 
   static AsignacionStruct? maybeFromMap(dynamic data) => data is Map
@@ -86,6 +125,9 @@ class AsignacionStruct extends FFFirebaseStruct {
         'usuario': _usuario?.toMap(),
         'fecha_hora_asignacion': _fechaHoraAsignacion,
         'fecha_hora_desasignacion': _fechaHoraDesasignacion,
+        'distancia_recorrida': _distanciaRecorrida,
+        'distancia_inicial': _distanciaInicial,
+        'distancia_final': _distanciaFinal,
       }.withoutNulls;
 
   @override
@@ -109,6 +151,18 @@ class AsignacionStruct extends FFFirebaseStruct {
         'fecha_hora_desasignacion': serializeParam(
           _fechaHoraDesasignacion,
           ParamType.DateTime,
+        ),
+        'distancia_recorrida': serializeParam(
+          _distanciaRecorrida,
+          ParamType.double,
+        ),
+        'distancia_inicial': serializeParam(
+          _distanciaInicial,
+          ParamType.double,
+        ),
+        'distancia_final': serializeParam(
+          _distanciaFinal,
+          ParamType.double,
         ),
       }.withoutNulls;
 
@@ -141,6 +195,21 @@ class AsignacionStruct extends FFFirebaseStruct {
           ParamType.DateTime,
           false,
         ),
+        distanciaRecorrida: deserializeParam(
+          data['distancia_recorrida'],
+          ParamType.double,
+          false,
+        ),
+        distanciaInicial: deserializeParam(
+          data['distancia_inicial'],
+          ParamType.double,
+          false,
+        ),
+        distanciaFinal: deserializeParam(
+          data['distancia_final'],
+          ParamType.double,
+          false,
+        ),
       );
 
   @override
@@ -153,12 +222,23 @@ class AsignacionStruct extends FFFirebaseStruct {
         vehiculo == other.vehiculo &&
         usuario == other.usuario &&
         fechaHoraAsignacion == other.fechaHoraAsignacion &&
-        fechaHoraDesasignacion == other.fechaHoraDesasignacion;
+        fechaHoraDesasignacion == other.fechaHoraDesasignacion &&
+        distanciaRecorrida == other.distanciaRecorrida &&
+        distanciaInicial == other.distanciaInicial &&
+        distanciaFinal == other.distanciaFinal;
   }
 
   @override
-  int get hashCode => const ListEquality().hash(
-      [id, vehiculo, usuario, fechaHoraAsignacion, fechaHoraDesasignacion]);
+  int get hashCode => const ListEquality().hash([
+        id,
+        vehiculo,
+        usuario,
+        fechaHoraAsignacion,
+        fechaHoraDesasignacion,
+        distanciaRecorrida,
+        distanciaInicial,
+        distanciaFinal
+      ]);
 }
 
 AsignacionStruct createAsignacionStruct({
@@ -167,6 +247,9 @@ AsignacionStruct createAsignacionStruct({
   UserDataStruct? usuario,
   DateTime? fechaHoraAsignacion,
   DateTime? fechaHoraDesasignacion,
+  double? distanciaRecorrida,
+  double? distanciaInicial,
+  double? distanciaFinal,
   Map<String, dynamic> fieldValues = const {},
   bool clearUnsetFields = true,
   bool create = false,
@@ -178,6 +261,9 @@ AsignacionStruct createAsignacionStruct({
       usuario: usuario ?? (clearUnsetFields ? UserDataStruct() : null),
       fechaHoraAsignacion: fechaHoraAsignacion,
       fechaHoraDesasignacion: fechaHoraDesasignacion,
+      distanciaRecorrida: distanciaRecorrida,
+      distanciaInicial: distanciaInicial,
+      distanciaFinal: distanciaFinal,
       firestoreUtilData: FirestoreUtilData(
         clearUnsetFields: clearUnsetFields,
         create: create,
