@@ -13,7 +13,13 @@ const _kPrivateApiFunctionName = 'operadorTraccarApi';
 /// Start Traccar Group Code
 
 class TraccarGroup {
-  static String getBaseUrl() => 'https://traccar.potus.ar/api/';
+  static String getBaseUrl({
+    String? traccarapi,
+  }) {
+    traccarapi ??= FFDevEnvironmentValues().traccarapi;
+    return traccarapi;
+  }
+
   static Map<String, String> headers = {};
   static ServerCall serverCall = ServerCall();
   static DispositivosCall dispositivosCall = DispositivosCall();
@@ -21,8 +27,13 @@ class TraccarGroup {
 }
 
 class ServerCall {
-  Future<ApiCallResponse> call() async {
-    final baseUrl = TraccarGroup.getBaseUrl();
+  Future<ApiCallResponse> call({
+    String? traccarapi,
+  }) async {
+    traccarapi ??= FFDevEnvironmentValues().traccarapi;
+    final baseUrl = TraccarGroup.getBaseUrl(
+      traccarapi: traccarapi,
+    );
 
     return ApiManager.instance.makeApiCall(
       callName: 'Server',
@@ -51,8 +62,12 @@ class ServerCall {
 class DispositivosCall {
   Future<ApiCallResponse> call({
     int? uniqueId,
+    String? traccarapi,
   }) async {
-    final baseUrl = TraccarGroup.getBaseUrl();
+    traccarapi ??= FFDevEnvironmentValues().traccarapi;
+    final baseUrl = TraccarGroup.getBaseUrl(
+      traccarapi: traccarapi,
+    );
 
     return ApiManager.instance.makeApiCall(
       callName: 'Dispositivos',
@@ -97,8 +112,12 @@ class DispositivosCall {
 class PosicionesGetCall {
   Future<ApiCallResponse> call({
     int? id,
+    String? traccarapi,
   }) async {
-    final baseUrl = TraccarGroup.getBaseUrl();
+    traccarapi ??= FFDevEnvironmentValues().traccarapi;
+    final baseUrl = TraccarGroup.getBaseUrl(
+      traccarapi: traccarapi,
+    );
 
     return ApiManager.instance.makeApiCall(
       callName: 'PosicionesGet',
@@ -144,7 +163,13 @@ class PosicionesGetCall {
 /// Start TransportadorPostaAtuhApi Group Code
 
 class TransportadorPostaAtuhApiGroup {
-  static String getBaseUrl() => 'https://api.g4.potus.ar';
+  static String getBaseUrl({
+    String? hostApi,
+  }) {
+    hostApi ??= FFDevEnvironmentValues().hostApi;
+    return hostApi;
+  }
+
   static Map<String, String> headers = {};
   static LoginCall loginCall = LoginCall();
 }
@@ -153,8 +178,12 @@ class LoginCall {
   Future<ApiCallResponse> call({
     String? nombre = '',
     String? contrasena = '',
+    String? hostApi,
   }) async {
-    final baseUrl = TransportadorPostaAtuhApiGroup.getBaseUrl();
+    hostApi ??= FFDevEnvironmentValues().hostApi;
+    final baseUrl = TransportadorPostaAtuhApiGroup.getBaseUrl(
+      hostApi: hostApi,
+    );
 
     return ApiManager.instance.makeApiCall(
       callName: 'login',
@@ -204,8 +233,12 @@ class LoginCall {
 class TransportadorApiGroup {
   static String getBaseUrl({
     String? token = '',
-  }) =>
-      'https://api.g4.potus.ar';
+    String? hostApi,
+  }) {
+    hostApi ??= FFDevEnvironmentValues().hostApi;
+    return hostApi;
+  }
+
   static Map<String, String> headers = {
     'Authorization': 'Bearer [token]',
   };
@@ -217,14 +250,20 @@ class TransportadorApiGroup {
       InformarAsignacionCall();
   static InformarFinAsignacionCall informarFinAsignacionCall =
       InformarFinAsignacionCall();
+  static MiClienteCall miClienteCall = MiClienteCall();
+  static ObtenerPosicionesDeMiClienteCall obtenerPosicionesDeMiClienteCall =
+      ObtenerPosicionesDeMiClienteCall();
 }
 
 class DatosDelUsuarioCall {
   Future<ApiCallResponse> call({
     String? token = '',
+    String? hostApi,
   }) async {
+    hostApi ??= FFDevEnvironmentValues().hostApi;
     final baseUrl = TransportadorApiGroup.getBaseUrl(
       token: token,
+      hostApi: hostApi,
     );
 
     return ApiManager.instance.makeApiCall(
@@ -249,9 +288,12 @@ class VehiculoxIDCall {
   Future<ApiCallResponse> call({
     int? id,
     String? token = '',
+    String? hostApi,
   }) async {
+    hostApi ??= FFDevEnvironmentValues().hostApi;
     final baseUrl = TransportadorApiGroup.getBaseUrl(
       token: token,
+      hostApi: hostApi,
     );
 
     return ApiManager.instance.makeApiCall(
@@ -299,9 +341,12 @@ class VehiculoCambiarEstadoxIDCall {
     int? id,
     String? estado = '',
     String? token = '',
+    String? hostApi,
   }) async {
+    hostApi ??= FFDevEnvironmentValues().hostApi;
     final baseUrl = TransportadorApiGroup.getBaseUrl(
       token: token,
+      hostApi: hostApi,
     );
 
     return ApiManager.instance.makeApiCall(
@@ -353,9 +398,12 @@ class InformarAsignacionCall {
     int? idVehiculo,
     int? idUsuario,
     String? token = '',
+    String? hostApi,
   }) async {
+    hostApi ??= FFDevEnvironmentValues().hostApi;
     final baseUrl = TransportadorApiGroup.getBaseUrl(
       token: token,
+      hostApi: hostApi,
     );
 
     return ApiManager.instance.makeApiCall(
@@ -390,9 +438,12 @@ class InformarFinAsignacionCall {
     int? idAsignacion,
     int? distanciaFinal,
     String? token = '',
+    String? hostApi,
   }) async {
+    hostApi ??= FFDevEnvironmentValues().hostApi;
     final baseUrl = TransportadorApiGroup.getBaseUrl(
       token: token,
+      hostApi: hostApi,
     );
 
     return ApiManager.instance.makeApiCall(
@@ -416,6 +467,66 @@ class InformarFinAsignacionCall {
   }
 }
 
+class MiClienteCall {
+  Future<ApiCallResponse> call({
+    int? id,
+    String? token = '',
+    String? hostApi,
+  }) async {
+    hostApi ??= FFDevEnvironmentValues().hostApi;
+    final baseUrl = TransportadorApiGroup.getBaseUrl(
+      token: token,
+      hostApi: hostApi,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'MiCliente',
+      apiUrl: '$baseUrl/clientes/operador/$id',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class ObtenerPosicionesDeMiClienteCall {
+  Future<ApiCallResponse> call({
+    int? id,
+    String? token = '',
+    String? hostApi,
+  }) async {
+    hostApi ??= FFDevEnvironmentValues().hostApi;
+    final baseUrl = TransportadorApiGroup.getBaseUrl(
+      token: token,
+      hostApi: hostApi,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'ObtenerPosicionesDeMiCliente',
+      apiUrl: '$baseUrl/posiciones/cliente/$id',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
 /// End Transportador Api Group Code
 
 class TraccarProtocolApiCall {
@@ -427,7 +538,7 @@ class TraccarProtocolApiCall {
   }) async {
     return ApiManager.instance.makeApiCall(
       callName: 'TraccarProtocolApi',
-      apiUrl: 'http://traccar.potus.ar:19080',
+      apiUrl: 'http://traccar.loge.ar:8082',
       callType: ApiCallType.POST,
       headers: {},
       params: {

@@ -93,7 +93,7 @@ class _MyAppState extends State<MyApp> {
           interactive: true,
           thumbColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.dragged)) {
-              return const Color(0xffffffff);
+              return const Color(0xff4e3df2);
             }
             if (states.contains(WidgetState.hovered)) {
               return const Color(0xffffffff);
@@ -110,7 +110,7 @@ class _MyAppState extends State<MyApp> {
           interactive: true,
           thumbColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.dragged)) {
-              return const Color(0xff7790c7);
+              return const Color(0xff4e3df2);
             }
             if (states.contains(WidgetState.hovered)) {
               return const Color(0xff603b4f);

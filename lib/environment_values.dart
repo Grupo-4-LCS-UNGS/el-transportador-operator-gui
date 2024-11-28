@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 class FFDevEnvironmentValues {
-  static const String currentEnvironment = 'staging';
+  static const String currentEnvironment = 'Production';
   static const String environmentValuesPath =
       'assets/environment_values/environment.json';
 
@@ -21,6 +21,8 @@ class FFDevEnvironmentValues {
           await rootBundle.loadString(environmentValuesPath);
       final data = await json.decode(response);
       _hostApi = data['hostApi'];
+      _traccarapi = data['traccarapi'];
+      _traccarAuth = data['traccarAuth'];
     } catch (e) {
       print('Error loading environment values: $e');
     }
@@ -28,4 +30,10 @@ class FFDevEnvironmentValues {
 
   String _hostApi = '';
   String get hostApi => _hostApi;
+
+  String _traccarapi = '';
+  String get traccarapi => _traccarapi;
+
+  String _traccarAuth = '';
+  String get traccarAuth => _traccarAuth;
 }

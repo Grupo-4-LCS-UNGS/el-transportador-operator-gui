@@ -5,13 +5,13 @@ Future initFirebase() async {
   if (kIsWeb) {
     await Firebase.initializeApp(
         options: const FirebaseOptions(
-            apiKey: "AIzaSyCvU389JdAzr2gYwWNi9niO_UWtDUmKY0o",
-            authDomain: "g4-eltransportador.firebaseapp.com",
-            projectId: "g4-eltransportador",
-            storageBucket: "g4-eltransportador.firebasestorage.app",
-            messagingSenderId: "437832352814",
-            appId: "1:437832352814:web:dfc5d4fe97f87902a04bbf",
-            measurementId: "G-4QTLDBZT33"));
+            apiKey: "AIzaSyDEWXVVwTGaSi7LjDyLxNm1UWAEkHqojfw",
+            authDomain: "g4-produccion.firebaseapp.com",
+            projectId: "g4-produccion",
+            storageBucket: "g4-produccion.firebasestorage.app",
+            messagingSenderId: "685768337040",
+            appId: "1:685768337040:web:ac1c2bf22521cdac341a15",
+            measurementId: "G-1ZYH2XH0RN"));
   } else {
     await Firebase.initializeApp();
   }

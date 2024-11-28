@@ -1,13 +1,32 @@
 {
   "project_info": {
-    "project_number": "437832352814",
-    "project_id": "g4-eltransportador",
-    "storage_bucket": "g4-eltransportador.firebasestorage.app"
+    "project_number": "685768337040",
+    "project_id": "g4-produccion",
+    "storage_bucket": "g4-produccion.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:437832352814:android:8f1993981bf0c48fa04bbf",
+        "mobilesdk_app_id": "1:685768337040:android:7451677ab15a56a0341a15",
+        "android_client_info": {
+          "package_name": "ar.loge.g4.gestion"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoJixnhv-9EDZKzfuL_mnfeLe6F6YQ6c0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685768337040:android:67eba2739d524219341a15",
         "android_client_info": {
           "package_name": "ar.loge.g4.operador"
         }
@@ -15,7 +34,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDrsvJqxY7XwQ20OI5kJj3_bdJs4xTN-SQ"
+          "current_key": "AIzaSyAoJixnhv-9EDZKzfuL_mnfeLe6F6YQ6c0"
         }
       ],
       "services": {

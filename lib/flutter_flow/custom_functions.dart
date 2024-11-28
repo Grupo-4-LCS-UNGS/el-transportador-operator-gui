@@ -82,3 +82,15 @@ int convertToInt(double? entrada) {
   }
   return 0;
 }
+
+LatLng? obtenerlatLong(
+  double? lat,
+  double? long,
+) {
+  // Use the parameters to create a LatLng type and return
+  if (lat != null && long != null) {
+    return LatLng(lat, long);
+  } else {
+    return null;
+  }
+}

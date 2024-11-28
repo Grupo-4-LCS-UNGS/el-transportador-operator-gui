@@ -1,3 +1,5 @@
 {
-  "hostApi": "https://api.g4.potus.ar"
+  "hostApi": "https://api.eltransportador.loge.ar",
+"traccarapi": "https://traccar.loge.ar/api/",
+"traccarAuth": "aXR1bGFAbG9nb3MubmV0LmFyOkluVGVyMjJTb2w="
 }

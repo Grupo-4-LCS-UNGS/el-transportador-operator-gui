@@ -5,9 +5,11 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/instant_timer.dart';
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'gps_copy_model.dart';
@@ -46,6 +48,52 @@ class _GpsCopyWidgetState extends State<GpsCopyWidget> {
             TransportadorApiGroup.informarAsignacionCall.idAsignacion(
           (_model.informarAsignacionApiResult?.jsonBody ?? ''),
         )!;
+        _model.miClienteResult = await TransportadorApiGroup.miClienteCall.call(
+          id: currentUserData?.id,
+          token: currentUserData?.authToken,
+        );
+
+        if ((_model.miClienteResult?.succeeded ?? true)) {
+          _model.lugaresResult =
+              await TransportadorApiGroup.obtenerPosicionesDeMiClienteCall.call(
+            id: ((_model.miClienteResult?.jsonBody ?? '')
+                    .toList()
+                    .map<ClienteStruct?>(ClienteStruct.maybeFromMap)
+                    .toList() as Iterable<ClienteStruct?>)
+                .withoutNulls
+                .first
+                .id,
+            token: currentAuthenticationToken,
+          );
+
+          if ((_model.lugaresResult?.succeeded ?? true)) {
+            while (_model.iterador! <
+                ((_model.lugaresResult?.jsonBody ?? '')
+                        .toList()
+                        .map<PosicionesDeClienteStruct?>(
+                            PosicionesDeClienteStruct.maybeFromMap)
+                        .toList() as Iterable<PosicionesDeClienteStruct?>)
+                    .withoutNulls
+                    .length) {
+              _model.addToLugaresCliente(functions.obtenerlatLong(
+                  (((_model.lugaresResult?.jsonBody ?? '')
+                              .toList()
+                              .map<PosicionesDeClienteStruct?>(
+                                  PosicionesDeClienteStruct.maybeFromMap)
+                              .toList() as Iterable<PosicionesDeClienteStruct?>)
+                          .withoutNulls[_model.iterador!])
+                      .latitud,
+                  (((_model.lugaresResult?.jsonBody ?? '')
+                              .toList()
+                              .map<PosicionesDeClienteStruct?>(
+                                  PosicionesDeClienteStruct.maybeFromMap)
+                              .toList() as Iterable<PosicionesDeClienteStruct?>)
+                          .withoutNulls[_model.iterador!])
+                      .longitud)!);
+              _model.iterador = _model.iterador! + 1;
+            }
+          }
+        }
       }
       _model.instantTimer = InstantTimer.periodic(
         duration: const Duration(milliseconds: 5000),
@@ -64,7 +112,14 @@ class _GpsCopyWidgetState extends State<GpsCopyWidget> {
                 .longAsDouble(FFAppState().ultimaPosicionInformadaAppState),
           );
 
-          if (!(_model.apiTraccarProtocolResult?.succeeded ?? true)) {
+          if ((_model.apiTraccarProtocolResult?.succeeded ?? true)) {
+            await _model.googleMapsController.future.then(
+              (c) => c.animateCamera(
+                CameraUpdate.newLatLng(
+                    currentUserLocationValue!.toGoogleMaps()),
+              ),
+            );
+          } else {
             ScaffoldMessenger.of(context).clearSnackBars();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -85,6 +140,8 @@ class _GpsCopyWidgetState extends State<GpsCopyWidget> {
       );
     });
 
+    getCurrentUserLocation(defaultLocation: const LatLng(0.0, 0.0), cached: true)
+        .then((loc) => safeSetState(() => currentUserLocationValue = loc));
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
 
@@ -98,6 +155,21 @@ class _GpsCopyWidgetState extends State<GpsCopyWidget> {
   @override
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
+    if (currentUserLocationValue == null) {
+      return Container(
+        color: FlutterFlowTheme.of(context).primaryBackground,
+        child: Center(
+          child: SizedBox(
+            width: 50.0,
+            height: 50.0,
+            child: SpinKitDualRing(
+              color: FlutterFlowTheme.of(context).primaryContainer,
+              size: 50.0,
+            ),
+          ),
+        ),
+      );
+    }
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -177,7 +249,15 @@ class _GpsCopyWidgetState extends State<GpsCopyWidget> {
                     controller: _model.googleMapsController,
                     onCameraIdle: (latLng) => _model.googleMapsCenter = latLng,
                     initialLocation: _model.googleMapsCenter ??=
-                        const LatLng(-34.521902527624974, -58.70000868445082),
+                        currentUserLocationValue!,
+                    markers: _model.lugaresCliente
+                        .map(
+                          (marker) => FlutterFlowMarker(
+                            marker.serialize(),
+                            marker,
+                          ),
+                        )
+                        .toList(),
                     markerColor: GoogleMarkerColor.violet,
                     mapType: MapType.normal,
                     style: GoogleMapStyle.night,

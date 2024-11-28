@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyC-IqdIm8SAGYOcG2RZuW7N0ETNoS8AJtw</string>
+	<string>AIzaSyAqLC6OP8FM9dsw-U3r1eJpS2q1CfjOoI8</string>
 	<key>GCM_SENDER_ID</key>
-	<string>437832352814</string>
+	<string>685768337040</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>ar.loge.g4.operador</string>
 	<key>PROJECT_ID</key>
-	<string>g4-eltransportador</string>
+	<string>g4-produccion</string>
 	<key>STORAGE_BUCKET</key>
-	<string>g4-eltransportador.firebasestorage.app</string>
+	<string>g4-produccion.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:437832352814:ios:b9493106647a4559a04bbf</string>
+	<string>1:685768337040:ios:edd5f64f155f97d9341a15</string>
 </dict>
 </plist>
